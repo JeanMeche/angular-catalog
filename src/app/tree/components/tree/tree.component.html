@@ -1,0 +1,106 @@
+<nav class="flex-1 space-y-1 bg-white">
+  <ul>
+
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [trackBy]="trackBy">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        {{node.value.label}}
+      </mat-tree-node>
+
+      <!-- This is the tree node template for expandable nodes -->
+      <mat-nested-tree-node *matTreeNodeDef=" let node;when: hasChild" matTreeNodePadding>
+        <li>
+          <div class="mat-tree-node">
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.value.label">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            {{node.value.label}}
+          </div>
+          <ul [class.hidden]="!treeControl.isExpanded(node)" role="group">
+            <ng-container matTreeNodeOutlet></ng-container>
+          </ul>
+        </li>
+      </mat-nested-tree-node>
+    </mat-tree>
+  </ul>
+  <p class="px-4 pt-4 font-medium text-gray-900 uppercase"> Shortcuts </p>
+  <ul>
+    <li>
+      <a class="
+              inline-flex
+              items-center
+              w-full
+              px-4
+              py-2
+              mt-1
+              text-base text-gray-900
+              transition
+              duration-500
+              ease-in-out
+              transform
+              rounded-lg
+              focus:shadow-outline
+              hover:bg-gray-50
+            " href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z">
+          </path>
+        </svg>
+        <span class="ml-4"> Tasks</span>
+      </a>
+    </li>
+    <li>
+      <a class="
+              inline-flex
+              items-center
+              w-full
+              px-4
+              py-2
+              mt-1
+              text-base text-gray-900
+              transition
+              duration-500
+              ease-in-out
+              transform
+              rounded-lg
+              focus:shadow-outline
+              hover:bg-gray-50
+            " href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+          </path>
+        </svg>
+        <span class="ml-4"> Reports</span>
+      </a>
+    </li>
+    <li>
+      <a class="
+              inline-flex
+              items-center
+              w-full
+              px-4
+              py-2
+              mt-1
+              text-base text-gray-900
+              transition
+              duration-500
+              ease-in-out
+              transform
+              rounded-lg
+              focus:shadow-outline
+              hover:bg-gray-50
+            " href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z">
+          </path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z">
+          </path>
+        </svg>
+        <span class="ml-4"> Dashboard</span>
+      </a>
+    </li>
+  </ul>
+</nav>
