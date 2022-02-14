@@ -6,6 +6,9 @@
   ],
   "overrides": [
     {
+      "excludedFiles": [
+        "src/app/api/**/*"
+      ],
       "files": [
         "*.ts"
       ],

@@ -1,0 +1,75 @@
+@font-face {
+  font-family: 'HPSimplifiedBold';
+  src: url("/assets/fonts/latinGreekCyrillic-bold-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-bold-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-bold-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSimplifiedBdItalic';
+  src: url("/assets/fonts/latinGreekCyrillic-boldItalic-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-boldItalic-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-boldItalic-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSimplifiedItalic';
+  src: url("/assets/fonts/latinGreekCyrillic-italic-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-italic-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-italic-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSimplifiedLight';
+  src: url("/assets/fonts/latinGreekCyrillic-light-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-light-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-light-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSimplifiedLtItalic';
+  src: url("/assets/fonts/latinGreekCyrillic-lightItalic-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-lightItalic-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-lightItalic-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSimplifiedRegular';
+  src: url("/assets/fonts/latinGreekCyrillic-regular-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-regular-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-regular-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSimplified';
+  src: url("/assets/fonts/latinGreekCyrillic-regular-eot.eot");
+  src: url("/assets/fonts/latinGreekCyrillic-regular-eot.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/latinGreekCyrillic-regular-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'HPSeven';
+  src: url("/ie/en/images/fonts/hpi/hps/no-seven-regular-eot.eot");
+  src: url("/ie/en/images/fonts/hpi/hps/no-seven-regular-eot.eot?#iefix") format("embedded-opentype"), url("/ie/en/images/fonts/hpi/hps/no-seven-regular-woff.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: HPIcons;
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://ssl.www8.hp.com/fr/fr/images/fonts/hpi/icons/caas-hf-v4.0/hpi-hf-icons-woff.woff) format("woff"), url(https://ssl.www8.hp.com/fr/fr/images/fonts/hpi/icons/caas-hf-v4.0/hpi-hf-icons-eot.eot?#iefix) format("embedded-opentype"), url(https://ssl.www8.hp.com/fr/fr/images/fonts/hpi/icons/caas-hf-v4.0/hpi-hf-icons-svg.svg?#HPIcons) format("svg")
+}
+
+body,
+input {
+  font-family: HPSimplified, Arial
+}

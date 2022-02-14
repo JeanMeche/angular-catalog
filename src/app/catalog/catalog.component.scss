@@ -1,0 +1,11 @@
+.brand {
+
+  &:before {
+    position: absolute;
+    left: 15px;
+    font-family: HPIcons;
+    font-size: 50px;
+    color: white;
+    content: "\e900";
+  }
+}

@@ -1,0 +1,32 @@
+<div class="h-screen flex flex-col">
+  <header class="h-16 bg-primary flex justify-between text-white">
+    <div class="flex items-center brand pl-20 text-white">
+      <a [routerLink]="['/']" routerLinkActive="router-link-active" class="">Product Content Browser</a>
+    </div>
+    <div class="flex-1"></div>
+    <button mat-button>Sign-in</button>
+    <button mat-button>Resource Center</button>
+    <button mat-button>Support</button>
+  </header>
+
+  <div class=" flex flex-1 overflow-hidden bg-white rounded-lg">
+    <div class="hidden md:flex md:flex-shrink-0">
+      <div class="flex flex-col w-80 py-6">
+
+        <div class="flex flex-col flex-grow px-2">
+          <app-catalog-list></app-catalog-list>
+          <app-search class="mb-4"></app-search>
+
+          <app-tree class="flex-1"></app-tree>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col flex-1 w-0 overflow-hidden">
+      <main class="relative flex-1 overflow-y-auto focus:outline-none">
+        <div class="flex h-full py-6">
+          <app-product-content class="min-w-0"></app-product-content>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

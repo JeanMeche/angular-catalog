@@ -1,0 +1,10 @@
+<ng-container *ngIf="vo$ | async; let vo">
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Catalog</mat-label>
+    <mat-select [value]="vo.selectedCatalog?.code" (selectionChange)="catalogSelected($event)">
+      <mat-option *ngFor="let catalog of vo.catalogs" [value]="catalog.code">
+        {{catalog.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-container>
