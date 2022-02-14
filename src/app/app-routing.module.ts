@@ -4,26 +4,22 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { MsgContentComponent } from './catalog/components/content/msg-content/msg-content.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'catalog/',
-  //   pathMatch: 'full',
-  // },
-  // {
-  //   path: 'catalog',
-  //   redirectTo: 'catalog/',
-  //   pathMatch: 'full',
-  // },
-  // {
-  //   path: 'catalog/:catalogId',
-  //   component: CatalogComponent,
-  // },
   {
-    path: ':catalogId',
+    path: '',
+    redirectTo: 'catalog/',
+    pathMatch: 'full',
+  },
+  {
+    path: 'catalog',
+    redirectTo: 'catalog/',
+    pathMatch: 'full',
+  },
+  {
+    path: 'catalog/:catalogId',
     component: CatalogComponent,
   },
   {
-    path: ':catalogId/:oid',
+    path: 'catalog/:catalogId/:oid',
     component: CatalogComponent,
     children: [
       {

@@ -84,7 +84,7 @@ export class CatalogEffects {
         ofType(ProductActions.selectCategory),
         withLatestFrom(this.store.select(selectSelectedContentType), this.store.select(selectCurrentCatalog)),
         tap(([action, contentType, catalog]) =>
-          this.router.navigate([catalog, action.category.oid, contentType.toLocaleLowerCase()])
+          this.router.navigate(['catalog/',catalog, action.category.oid, contentType.toLocaleLowerCase()])
         )
       );
     },

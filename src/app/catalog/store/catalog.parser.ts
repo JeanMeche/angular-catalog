@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CatalogBE, NodeContentsBE, NodeInCultureWithChildrenBE, NodeInCultureWithContentBE } from 'src/app/api';
+import {
+  CatalogBE,
+  NodeContentsBE,
+  NodeInCultureWithChildrenBE,
+  NodeInCultureWithContentBE,
+  NodeSearchResultsBE,
+} from 'src/app/api';
 import {
   Catalog,
   Category,
@@ -9,6 +15,7 @@ import {
   kvContentTypesList,
   Product,
 } from './catalog.reducer';
+import { SearchAutocompleteResult } from './catalog.resource';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogParser {
@@ -44,6 +51,20 @@ export class CatalogParser {
       oid: content.oid,
       productName: content.name,
       others: this.parseTableContent(content.contents, contentType),
+    };
+  }
+
+  parseSearchAutocomplete(result: NodeSearchResultsBE): SearchAutocompleteResult {
+    const list =
+      result.results?.map((r) => {
+        return {
+          oid: r.oid,
+          name: r.name,
+          highlightedName: r.highlightedName,
+        };
+      }) ?? [];
+    return {
+      result: list,
     };
   }
 

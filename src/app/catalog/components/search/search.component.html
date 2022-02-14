@@ -1,18 +1,29 @@
-<app-card>
-  <ng-container card-header>
-    <h1>Search</h1>
-  </ng-container>
-  <content card-content>
-    <form class="example-form">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Number</mat-label>
-        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]=" searchControl" [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          <!-- <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option}}
-          </mat-option> -->
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-  </content>
-</app-card>
+<ng-container *ngIf="vo$ | async; let vo">
+  <app-card>
+    <ng-container card-header>
+      <h1>Search</h1>
+    </ng-container>
+    <content card-content>
+      <form class="px-4">
+        <mat-form-field class="w-full">
+          <input
+            type="text"
+            placeholder="Series name, Codename, Product number or product name"
+            matInput
+            [formControl]="searchControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of vo.suggestions"
+              [value]="option.oid"
+            >
+              <span
+                innerHtml="{{ option.highlightedName ?? option.name }}"
+              ></span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </content> </app-card
+></ng-container>

@@ -21,6 +21,10 @@ export const selectSelectedContentType = createSelector(selectFeature, (state: C
 
 export const selectSelectedCategory = createSelector(selectFeature, (state: CatalogState) => state.selectedCategory);
 
+export const selectCatalogParams = createSelector(selectCurrentCatalog, selectProductStatus, (catalog, status) => {
+  return { catalog, status };
+});
+
 export const selectSelectedCategoryAndContentType = createSelector(
   selectSelectedCategory,
   selectCategories,

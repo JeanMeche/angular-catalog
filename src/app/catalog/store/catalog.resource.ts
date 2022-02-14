@@ -4,7 +4,17 @@ import { filter, map, Observable, switchMap, withLatestFrom } from 'rxjs';
 import { CatalogService, ContentsService } from 'src/app/api';
 import { CatalogParser } from './catalog.parser';
 import { Catalog, CatalogState, Category, Content, ContentType } from './catalog.reducer';
-import { selectCurrentCatalog, selectProductStatus } from './catalog.selector';
+import { selectCatalogParams, selectCurrentCatalog, selectProductStatus } from './catalog.selector';
+
+export interface SearchAutocompleteResult {
+  result: Array<SearchAutocompleleteItem>;
+}
+
+export interface SearchAutocompleleteItem {
+  oid: number;
+  name: string;
+  highlightedName?: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class CatalogResource {
@@ -64,6 +74,24 @@ export class CatalogResource {
         })
       ),
       map((content) => this.catalogParser.parseContent(content, contentType))
+    );
+  }
+
+  searchAutocomplete(searchStr: string, exact: boolean): Observable<SearchAutocompleteResult> {
+    return this.store.select(selectCatalogParams).pipe(
+      switchMap(({ catalog, status }) => {
+        return this.catalogService.cultureCodeSearchAutocompleteTermGet({
+          cultureCode: catalog!,
+          term: searchStr,
+          exactSearch: exact,
+          searchLimit: 100,
+          status,
+          searchModes: new Set(['product', 'codename']),
+        });
+      }),
+      map((result) => {
+        return this.catalogParser.parseSearchAutocomplete(result);
+      })
     );
   }
 }
