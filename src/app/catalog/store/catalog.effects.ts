@@ -7,7 +7,7 @@ import { catchError, map, mergeMap, switchMap, tap, timeout } from 'rxjs/operato
 import { CatalogActions, CategoriesActions, ProductActions } from './catalog.actions';
 import { CatalogState } from './catalog.reducer';
 import { CatalogResource } from './catalog.resource';
-import { selectCurrentCatalog, selectSelectedContentType } from './catalog.selector';
+import { selectCurrentCatalog, selectSelectedCategory, selectSelectedContentType } from './catalog.selector';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogEffects {
@@ -37,7 +37,14 @@ export class CatalogEffects {
     () =>
       this.actions$.pipe(
         ofType(CatalogActions.selectCatalog),
-        tap((action) => this.router.navigate([action.selectedCatalog, '', 'msg']))
+        withLatestFrom(this.store.select(selectSelectedCategory)),
+        tap(([action, cat]) => {
+          if (cat) {
+            this.router.navigate(['catalog', action.selectedCatalog, cat, 'msg']);
+          } else {
+            this.router.navigate(['catalog', action.selectedCatalog]);
+          }
+        })
       ),
     { dispatch: false }
   );
@@ -84,7 +91,7 @@ export class CatalogEffects {
         ofType(ProductActions.selectCategory),
         withLatestFrom(this.store.select(selectSelectedContentType), this.store.select(selectCurrentCatalog)),
         tap(([action, contentType, catalog]) =>
-          this.router.navigate(['catalog/',catalog, action.category.oid, contentType.toLocaleLowerCase()])
+          this.router.navigate(['catalog/', catalog, action.category.oid, contentType.toLocaleLowerCase()])
         )
       );
     },

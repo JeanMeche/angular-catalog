@@ -39,8 +39,13 @@ export const selectSelectedCategoryAndContentType = createSelector(
   }
 );
 
-export const selectProductContent = (contentType: ContentType) =>
-  createSelector(selectFeature, (state: CatalogState) => state.selectedCategory?.content?.[contentType]);
+export const selectProductContent = createSelector(
+  selectFeature,
+  (state: CatalogState) => state.selectedCategory?.content
+);
+
+export const selectProductContentByType = (contentType: ContentType) =>
+  createSelector(selectProductContent, (content) => content?.[contentType]);
 
 const flattenCategories = (categories: Array<Category>): Array<Category> => {
   return categories.flatMap((cat) => [cat, ...(cat.children ? flattenCategories(cat.children) : [])]);

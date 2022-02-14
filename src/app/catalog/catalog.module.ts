@@ -9,8 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -23,6 +26,7 @@ import { SearchComponent } from './components/search/search.component';
 import { TreeComponent } from './components/tree/tree.component';
 import { CatalogEffects } from './store/catalog.effects';
 import { featureKey, reducer } from './store/catalog.reducer';
+import { ParentTreeComponent } from './components/content/parent-tree/parent-tree.component';
 
 @NgModule({
   imports: [
@@ -33,14 +37,17 @@ import { featureKey, reducer } from './store/catalog.reducer';
     StoreModule.forFeature(featureKey, reducer),
     EffectsModule.forFeature([CatalogEffects]),
 
+    OverlayModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatCardModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatSelectModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     MatTabsModule,
     MatTreeModule,
 
@@ -52,6 +59,7 @@ import { featureKey, reducer } from './store/catalog.reducer';
     CatalogListComponent,
     ProductContentComponent,
     TreeComponent,
+    ParentTreeComponent,
     MsgContentComponent,
   ],
 })

@@ -1,28 +1,67 @@
 <ng-container *ngIf="vo$ | async; let vo">
-
   <h3>Product Status</h3>
-  <mat-button-toggle-group name="product-status" aria-label="Product Status" multiple (valueChange)="statusSelected($event)">
-    <mat-button-toggle value="L" [checked]="vo.productStatus | has:'L'">
-      <mat-icon *ngIf="vo.productStatus | has:'L'">check_circle</mat-icon>
-      <mat-icon *ngIf="!(vo.productStatus | has:'L')">radio_button_unchecked</mat-icon> Active
+  <mat-button-toggle-group
+    name="product-status"
+    aria-label="Product Status"
+    multiple
+    (valueChange)="statusSelected($event)"
+  >
+    <mat-button-toggle value="L" [checked]="vo.productStatus | has: 'L'">
+      <mat-icon *ngIf="vo.productStatus | has: 'L'">check_circle</mat-icon>
+      <mat-icon *ngIf="!(vo.productStatus | has: 'L')"
+        >radio_button_unchecked</mat-icon
+      >
+      Active
     </mat-button-toggle>
-    <mat-button-toggle value="O" [checked]="vo.productStatus | has:'O'">
-      <mat-icon *ngIf="vo.productStatus | has:'O'">check_circle</mat-icon>
-      <mat-icon *ngIf="!(vo.productStatus | has:'O')">radio_button_unchecked</mat-icon> Obsolete
+    <mat-button-toggle value="O" [checked]="vo.productStatus | has: 'O'">
+      <mat-icon *ngIf="vo.productStatus | has: 'O'">check_circle</mat-icon>
+      <mat-icon *ngIf="!(vo.productStatus | has: 'O')"
+        >radio_button_unchecked</mat-icon
+      >
+      Obsolete
     </mat-button-toggle>
-    <mat-button-toggle value="F" [checked]="vo.productStatus | has:'F'">
-      <mat-icon *ngIf="vo.productStatus | has:'F'">check_circle</mat-icon>
-      <mat-icon *ngIf="!(vo.productStatus | has:'F')">radio_button_unchecked</mat-icon>
+    <mat-button-toggle value="F" [checked]="vo.productStatus | has: 'F'">
+      <mat-icon *ngIf="vo.productStatus | has: 'F'">check_circle</mat-icon>
+      <mat-icon *ngIf="!(vo.productStatus | has: 'F')"
+        >radio_button_unchecked</mat-icon
+      >
       Future/pre-released
     </mat-button-toggle>
-
   </mat-button-toggle-group>
 
-  <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="mb-4">
-    <a mat-tab-link [routerLink]="['msg']" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">Messaging</a>
-    <a mat-tab-link [routerLink]="['tsc']" routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">TechSpec</a>
-    <a mat-tab-link [routerLink]="['cmp']" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">Compatibilities</a>
-    <a mat-tab-link [routerLink]="['doc']" routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">Documents</a>
+  <nav mat-tab-nav-bar  class="mb-4">
+    <a
+      mat-tab-link
+      [routerLink]="['msg']"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [active]="rla.isActive"
+      >Messaging</a
+    >
+    <a
+      mat-tab-link
+      [routerLink]="['tsc']"
+      routerLinkActive
+      #rla2="routerLinkActive"
+      [active]="rla2.isActive"
+      >TechSpec</a
+    >
+    <a
+      mat-tab-link
+      [routerLink]="['cmp']"
+      routerLinkActive
+      #rla3="routerLinkActive"
+      [active]="rla3.isActive"
+      >Compatibilities</a
+    >
+    <a
+      mat-tab-link
+      [routerLink]="['doc']"
+      routerLinkActive
+      #rla4="routerLinkActive"
+      [active]="rla4.isActive"
+      >Documents</a
+    >
     <a mat-tab-link>Images</a>
     <a mat-tab-link>Videos</a>
     <a mat-tab-link>Ratings</a>
@@ -30,14 +69,6 @@
   </nav>
 
   <div>
-    <app-card class=" flex-1 min-w-0">
-      <ng-container card-header>Title</ng-container>
-
-      <content card-content>
-        <mat-tab-nav-panel #tabPanel>
-          <router-outlet></router-outlet>
-        </mat-tab-nav-panel>
-      </content>
-    </app-card>
+    <router-outlet></router-outlet>
   </div>
 </ng-container>

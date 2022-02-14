@@ -1,0 +1,27 @@
+<!-- This template displays the overlay content and is connected to the button -->
+<ng-container *ngIf="parents.length > 0">
+  <ng-template
+    *ngIf="parents.length > 0"
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="showTree"
+    [cdkConnectedOverlayHasBackdrop]="true"
+    (backdropClick)="showTree = false"
+  >
+    <mat-card>
+      <ul class="example-list">
+        <li *ngFor="let parent of parents">{{ parent.label }}</li>
+      </ul>
+    </mat-card>
+  </ng-template>
+
+  <button
+    mat-icon-button
+    (click)="showTree = !showTree"
+    type="button"
+    cdkOverlayOrigin
+    #trigger="cdkOverlayOrigin"
+  >
+    <mat-icon>account_tree</mat-icon>
+  </button>
+</ng-container>

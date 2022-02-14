@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, filter, map, Observable, switchMap, take, withLatestFrom } from 'rxjs';
 import { ProductActions } from '../../store/catalog.actions';
-import { CatalogState, ContentType, ProductStatus } from '../../store/catalog.reducer';
+import { BaseCategory, CatalogState, Category, ContentType, ProductStatus } from '../../store/catalog.reducer';
 import { selectCatagory, selectProductStatus, selectSelectedContentType } from '../../store/catalog.selector';
 
 @Component({
@@ -26,10 +26,11 @@ export class ProductContentComponent {
         }),
         filter((oid): oid is number => oid !== undefined),
         switchMap((oid) => this.store.select(selectCatagory(oid)).pipe(take(1))),
+        filter((cat): cat is Category => cat !== undefined),
         withLatestFrom(this.store.select(selectSelectedContentType))
       )
       .subscribe(([category, contentType]) => {
-        this.store.dispatch(ProductActions.getContent({ contentType: contentType, category: category! }));
+        this.store.dispatch(ProductActions.getContent({ contentType: contentType, category: category }));
       });
 
     this.vo$ = combineLatest([

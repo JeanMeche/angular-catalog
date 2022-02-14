@@ -19,7 +19,7 @@ import { CatalogResource, SearchAutocompleleteItem } from '../../store/catalog.r
 })
 export class SearchComponent implements OnDestroy {
   searchControl = new FormControl();
-  exactSearchControl = new FormControl();
+  exactSearchControl = new FormControl(false);
 
   onDestroy$ = new BehaviorSubject(undefined);
 
@@ -28,11 +28,10 @@ export class SearchComponent implements OnDestroy {
   }>;
 
   constructor(private catalogResource: CatalogResource) {
-    const searchResult$ = this.searchControl.valueChanges.pipe(
+    const searchResult$ = combineLatest([this.searchControl.valueChanges, this.exactSearchControl.valueChanges]).pipe(
       debounceTime(500),
-      distinctUntilChanged(),
-      switchMap((searchStr) => {
-        return this.catalogResource.searchAutocomplete(searchStr, this.exactSearchControl.value);
+      switchMap(([searchStr, exact]) => {
+        return this.catalogResource.searchAutocomplete(searchStr, exact);
       }),
       startWith(undefined)
     );

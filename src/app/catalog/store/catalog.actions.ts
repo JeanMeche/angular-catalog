@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Catalog, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
+import { BaseCategory, Catalog, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
 
 export namespace CatalogActions {
   export const init = createAction('[Catalog] Init');
@@ -29,6 +29,6 @@ export namespace ProductActions {
   );
   export const getContentSuccess = createAction(
     '[Product] Get Content Success',
-    props<{ category: Category; contentType: ContentType; content: Content[ContentType] }>()
+    props<{ category: Category; contentType: ContentType; content: Content }>()
   );
 }

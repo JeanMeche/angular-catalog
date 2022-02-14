@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { filter, map, Observable, switchMap, withLatestFrom } from 'rxjs';
 import { CatalogService, ContentsService } from 'src/app/api';
 import { CatalogParser } from './catalog.parser';
-import { Catalog, CatalogState, Category, Content, ContentType } from './catalog.reducer';
+import { BaseCategory, Catalog, CatalogState, Category, Content, ContentType } from './catalog.reducer';
 import { selectCatalogParams, selectCurrentCatalog, selectProductStatus } from './catalog.selector';
 
 export interface SearchAutocompleteResult {
@@ -63,7 +63,7 @@ export class CatalogResource {
       );
   }
 
-  getContent(category: Category, contentType: ContentType): Observable<Content[ContentType]> {
+  getContent(category: Category, contentType: ContentType): Observable<Content> {
     return this.store.select(selectProductStatus).pipe(
       switchMap((status) =>
         this.contentService.cultureCodeOidContentsGet({

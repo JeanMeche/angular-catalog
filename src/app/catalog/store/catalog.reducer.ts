@@ -32,11 +32,14 @@ export type KnownKeys<T> = keyof {
   [K in keyof T as string extends K ? never : number extends K ? never : K]: never;
 };
 
-export type Category = {
+export type BaseCategory = {
   oid: number;
   label: string;
-  children?: Array<Category>;
   level: number;
+};
+
+export type Category = BaseCategory & {
+  children?: Array<Category>;
   cultureCode: string;
   status: Set<ProductStatus>;
   isLoading: boolean;
@@ -64,21 +67,18 @@ export interface CatalogState {
   selectedContent: ContentType;
   selectedCategory?: {
     oid: number;
-    content?: Content;
+    content?: {[k in ContentType]: Content};
     isLoading: boolean;
   };
 }
 
-export type Content = {
-  [k in kvContentTypes]:
-    | {
-        oid: number;
-        productNumber?: string;
-        productName: string;
-        others: Array<{ key: string; value: string }>;
-      }
-    | undefined;
-} & { [k in Exclude<ContentType, kvContentTypes>]: {} };
+export type Content<T = { key: string; value: string }> = {
+  oid: number;
+  productNumber?: string;
+  productName: string;
+  others: Array<T>;
+  parents: Array<BaseCategory>;
+};
 
 export const initialState: CatalogState = {
   catalogs: [],

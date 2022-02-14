@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  BaseNodeBE,
   CatalogBE,
   NodeContentsBE,
   NodeInCultureWithChildrenBE,
@@ -7,6 +8,7 @@ import {
   NodeSearchResultsBE,
 } from 'src/app/api';
 import {
+  BaseCategory,
   Catalog,
   Category,
   Content,
@@ -45,12 +47,13 @@ export class CatalogParser {
       .sort((cat1, cat2) => (cat1.label > cat2.label ? 1 : -1));
   }
 
-  parseContent(content: NodeInCultureWithContentBE, contentType: ContentType): Content[ContentType] {
+  parseContent(content: NodeInCultureWithContentBE, contentType: ContentType): Content {
     return {
-      name: content.name,
       oid: content.oid,
       productName: content.name,
+      productNumber: content.productNumber,
       others: this.parseTableContent(content.contents, contentType),
+      parents: content.path?.map((node) => this.parseNode(node)) ?? [],
     };
   }
 
@@ -65,6 +68,14 @@ export class CatalogParser {
       }) ?? [];
     return {
       result: list,
+    };
+  }
+
+  private parseNode(node: BaseNodeBE): BaseCategory {
+    return {
+      label: node.name,
+      oid: node.oid,
+      level: node.level,
     };
   }
 

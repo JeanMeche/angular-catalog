@@ -2,6 +2,9 @@
   <app-card>
     <ng-container card-header>
       <h1>Search</h1>
+      <span>
+        <mat-slide-toggle [formControl]="exactSearchControl">Match terms order</mat-slide-toggle>
+      </span>
     </ng-container>
     <content card-content>
       <form class="px-4">
