@@ -17,7 +17,6 @@ export class DynamicDataSource extends MatTreeNestedDataSource<TreeNode<Category
     private actions$: Actions
   ) {
     super();
-    this.store.dispatch(CategoriesActions.initTree());
     this.treeControl.expansionModel.changed.subscribe((change) => {
       if (change.added && change.added.length > 0) {
         const changedCategoryNode = change.added[0];

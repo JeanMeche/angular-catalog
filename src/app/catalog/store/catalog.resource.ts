@@ -63,12 +63,12 @@ export class CatalogResource {
       );
   }
 
-  getContent(category: Category, contentType: ContentType): Observable<Content> {
+  getContent(oid: number, cultureCode: string, contentType: ContentType): Observable<Content> {
     return this.store.select(selectProductStatus).pipe(
       switchMap((status) =>
         this.contentService.cultureCodeOidContentsGet({
-          oid: `${category.oid}`,
-          cultureCode: category.cultureCode,
+          oid: `${oid}`,
+          cultureCode: cultureCode,
           status,
           contentType: new Set([contentType]),
         })

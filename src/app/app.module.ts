@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
@@ -18,8 +19,10 @@ import { MyHttpInterceptor } from './helpers/http-interceptor';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({ router: routerReducer }),
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot(),
+
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({

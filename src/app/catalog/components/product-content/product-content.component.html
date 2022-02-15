@@ -4,23 +4,23 @@
     name="product-status"
     aria-label="Product Status"
     multiple
-    (valueChange)="statusSelected($event)"
+    [formControl]="statusControl"
   >
-    <mat-button-toggle value="L" [checked]="vo.productStatus | has: 'L'">
+    <mat-button-toggle value="L">
       <mat-icon *ngIf="vo.productStatus | has: 'L'">check_circle</mat-icon>
       <mat-icon *ngIf="!(vo.productStatus | has: 'L')"
         >radio_button_unchecked</mat-icon
       >
       Active
     </mat-button-toggle>
-    <mat-button-toggle value="O" [checked]="vo.productStatus | has: 'O'">
+    <mat-button-toggle value="O">
       <mat-icon *ngIf="vo.productStatus | has: 'O'">check_circle</mat-icon>
       <mat-icon *ngIf="!(vo.productStatus | has: 'O')"
         >radio_button_unchecked</mat-icon
       >
       Obsolete
     </mat-button-toggle>
-    <mat-button-toggle value="F" [checked]="vo.productStatus | has: 'F'">
+    <mat-button-toggle value="F">
       <mat-icon *ngIf="vo.productStatus | has: 'F'">check_circle</mat-icon>
       <mat-icon *ngIf="!(vo.productStatus | has: 'F')"
         >radio_button_unchecked</mat-icon
@@ -29,7 +29,7 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <nav mat-tab-nav-bar  class="mb-4">
+  <nav mat-tab-nav-bar class="mb-4">
     <a
       mat-tab-link
       [routerLink]="['msg']"

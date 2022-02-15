@@ -1,8 +1,8 @@
 <div class="border rounded-md overflow-hidden h-full flex flex-col">
-  <header class="flex items-center justify-between bg-gray-200 h-12 mb-2 pl-4">
+  <header class="flex items-center justify-between bg-gray-200 h-12 px-3">
     <ng-content select="[card-header]"></ng-content>
   </header>
-  <div class="flex-1">
+  <div class="flex-1 min-h-0">
     <ng-content select="[card-content]"></ng-content>
   </div>
 </div>

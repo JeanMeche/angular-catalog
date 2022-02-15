@@ -130,11 +130,11 @@ export const reducer = createReducer(
     };
   }),
 
-  on(ProductActions.getContentSuccess, (state, { category, contentType, content }) => {
+  on(ProductActions.getContentSuccess, (state, { oid, contentType, content }) => {
     const retVal: CatalogState = {
       ...state,
       selectedCategory: {
-        oid: category.oid,
+        oid,
         ...state.selectedCategory,
         content: {
           [contentType]: content,

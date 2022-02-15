@@ -27,6 +27,7 @@ import { TreeComponent } from './components/tree/tree.component';
 import { CatalogEffects } from './store/catalog.effects';
 import { featureKey, reducer } from './store/catalog.reducer';
 import { ParentTreeComponent } from './components/content/parent-tree/parent-tree.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -37,7 +38,10 @@ import { ParentTreeComponent } from './components/content/parent-tree/parent-tre
     StoreModule.forFeature(featureKey, reducer),
     EffectsModule.forFeature([CatalogEffects]),
 
+    /** CDK/Material modules  */
+    DragDropModule,
     OverlayModule,
+
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
@@ -51,6 +55,7 @@ import { ParentTreeComponent } from './components/content/parent-tree/parent-tre
     MatTabsModule,
     MatTreeModule,
 
+    /** Local modules */
     SharedModule,
   ],
   declarations: [

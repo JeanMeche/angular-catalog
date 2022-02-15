@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { combineLatest, of, withLatestFrom } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap, timeout } from 'rxjs/operators';
+import { selectRouteParams, selectCurrentRoute } from 'src/app/router/router.selector';
 import { CatalogActions, CategoriesActions, ProductActions } from './catalog.actions';
 import { CatalogState } from './catalog.reducer';
 import { CatalogResource } from './catalog.resource';
@@ -15,7 +16,8 @@ export class CatalogEffects {
     private actions$: Actions,
     private store: Store<CatalogState>,
     private catalogResource: CatalogResource,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   init$ = createEffect(() =>
@@ -33,20 +35,18 @@ export class CatalogEffects {
     )
   );
 
-  selectedCatalog$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CatalogActions.selectCatalog),
-        withLatestFrom(this.store.select(selectSelectedCategory)),
-        tap(([action, cat]) => {
-          if (cat) {
-            this.router.navigate(['catalog', action.selectedCatalog, cat, 'msg']);
-          } else {
-            this.router.navigate(['catalog', action.selectedCatalog]);
-          }
-        })
-      ),
-    { dispatch: false }
+  selectedCatalog$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CatalogActions.selectCatalog),
+      withLatestFrom(this.store.select(selectSelectedCategory)),
+      tap(([action, cat]) => {
+        if (cat) {
+          this.router.navigate(['catalog', action.selectedCatalog, cat.oid, 'msg']);
+          // this.router.navigate(['catalog', action.selectedCatalog]);
+        }
+      }),
+      map(() => CategoriesActions.initTree())
+    )
   );
 
   loadCategories$ = createEffect(() => {
@@ -91,7 +91,7 @@ export class CatalogEffects {
         ofType(ProductActions.selectCategory),
         withLatestFrom(this.store.select(selectSelectedContentType), this.store.select(selectCurrentCatalog)),
         tap(([action, contentType, catalog]) =>
-          this.router.navigate(['catalog/', catalog, action.category.oid, contentType.toLocaleLowerCase()])
+          this.router.navigate(['catalog', catalog, action.category.oid, contentType.toLocaleLowerCase()])
         )
       );
     },
@@ -102,11 +102,14 @@ export class CatalogEffects {
     return this.actions$.pipe(
       ofType(ProductActions.getContent),
       switchMap((action) => {
-        return combineLatest([this.catalogResource.getContent(action.category, action.contentType), of(action)]);
+        return combineLatest([
+          this.catalogResource.getContent(action.oid, action.cultureCode, action.contentType),
+          of(action),
+        ]);
       }),
       map(([content, action]) => {
         return ProductActions.getContentSuccess({
-          category: action.category,
+          oid: action.oid,
           contentType: action.contentType,
           content,
         });

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CatalogComponent } from './catalog/catalog.component';
 import { MsgContentComponent } from './catalog/components/content/msg-content/msg-content.component';
+import { ProductContentComponent } from './catalog/components/product-content/product-content.component';
 
 const routes: Routes = [
   {
@@ -17,14 +18,16 @@ const routes: Routes = [
   {
     path: 'catalog/:catalogId',
     component: CatalogComponent,
-  },
-  {
-    path: 'catalog/:catalogId/:oid',
-    component: CatalogComponent,
     children: [
       {
-        path: 'msg',
-        component: MsgContentComponent,
+        path: ':oid',
+        component: ProductContentComponent,
+        children: [
+          {
+            path: 'msg',
+            component: MsgContentComponent,
+          },
+        ],
       },
     ],
   },

@@ -25,10 +25,10 @@ export namespace ProductActions {
   export const selectCategory = createAction('[Product] Select category', props<{ category: Category }>());
   export const getContent = createAction(
     '[Product] Get Content',
-    props<{ category: Category; contentType: ContentType }>()
+    props<{ oid: number; cultureCode: string; contentType: ContentType }>()
   );
   export const getContentSuccess = createAction(
     '[Product] Get Content Success',
-    props<{ category: Category; contentType: ContentType; content: Content }>()
+    props<{ oid: number; contentType: ContentType; content: Content }>()
   );
 }

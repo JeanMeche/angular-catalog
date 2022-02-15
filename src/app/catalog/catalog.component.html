@@ -1,7 +1,9 @@
 <div class="h-screen flex flex-col">
   <header class="h-16 bg-primary flex justify-between text-white">
     <div class="flex items-center brand pl-20 text-white">
-      <a [routerLink]="['/']" routerLinkActive="router-link-active" class="">Product Content Browser</a>
+      <a [routerLink]="['/']" routerLinkActive="router-link-active" class=""
+        >Product Content Browser</a
+      >
     </div>
     <div class="flex-1"></div>
     <button mat-button>Sign-in</button>
@@ -9,22 +11,27 @@
     <button mat-button>Support</button>
   </header>
 
-  <div class=" flex flex-1 overflow-hidden bg-white rounded-lg">
-    <div class="hidden md:flex md:flex-shrink-0">
-      <div class="flex flex-col w-80 py-6">
+  <div class="flex flex-1 overflow-hidden bg-white rounded-lg">
+    <div class="flex flex-col w-96 py-6 px-2" #resizeBox>
+      <app-catalog-list></app-catalog-list>
+      <app-search class="mb-4"></app-search>
 
-        <div class="flex flex-col flex-grow px-2">
-          <app-catalog-list></app-catalog-list>
-          <app-search class="mb-4"></app-search>
-
-          <app-tree class="flex-1"></app-tree>
-        </div>
-      </div>
+      <app-tree class="flex-1 min-h-0"></app-tree>
     </div>
-    <div class="flex flex-col flex-1 w-0 overflow-hidden">
+    <div
+      class="w-1 bg-primary h-full cursor-ew-resize"
+      #dragHandleRight
+      cdkDragLockAxis="x"
+      cdkDrag
+      (cdkDragStarted)="dragStart()"
+      (cdkDragMoved)="dragMove(dragHandleRight, $event)"
+    ></div>
+    <div class="flex flex-col flex-1 w-0 overflow-hidden px-2">
       <main class="relative flex-1 overflow-y-auto focus:outline-none">
         <div class="flex h-full py-6">
-          <app-product-content class="min-w-0"></app-product-content>
+          <div class="min-w-0">
+            <router-outlet></router-outlet>
+          </div>
         </div>
       </main>
     </div>
