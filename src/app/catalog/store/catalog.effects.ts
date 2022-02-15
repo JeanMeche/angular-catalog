@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigationAction } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
-import { combineLatest, of, withLatestFrom } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, tap, timeout } from 'rxjs/operators';
-import { selectRouteParams, selectCurrentRoute } from 'src/app/router/router.selector';
+import { combineLatest, forkJoin, of, withLatestFrom } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, take, tap, timeout } from 'rxjs/operators';
+import {
+  selectRouteParams,
+  selectCurrentRoute,
+  selectQueryParams,
+  selectRouteParam,
+} from 'src/app/router/router.selector';
 import { CatalogActions, CategoriesActions, ProductActions } from './catalog.actions';
-import { CatalogState } from './catalog.reducer';
+import { CatalogState, Content, ContentType } from './catalog.reducer';
 import { CatalogResource } from './catalog.resource';
 import { selectCurrentCatalog, selectSelectedCategory, selectSelectedContentType } from './catalog.selector';
 
@@ -16,8 +22,7 @@ export class CatalogEffects {
     private actions$: Actions,
     private store: Store<CatalogState>,
     private catalogResource: CatalogResource,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   init$ = createEffect(() =>
@@ -113,6 +118,28 @@ export class CatalogEffects {
           contentType: action.contentType,
           content,
         });
+      })
+    );
+  });
+
+  onProductContentRouteChange$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigationAction),
+      switchMap(() =>
+        forkJoin([
+          this.store.select(selectRouteParam('catalogId')).pipe(take(1)),
+          this.store.select(selectRouteParam('oid')).pipe(
+            take(1),
+            map((v) => +(v ?? 0))
+          ),
+          this.store.select(selectRouteParam('content')).pipe(
+            take(1),
+            map((c) => c?.toLocaleUpperCase())
+          ),
+        ])
+      ),
+      map(([cultureCode, oid, content]) => {
+        return ProductActions.getContent({ contentType: content as ContentType, oid, cultureCode: cultureCode! });
       })
     );
   });

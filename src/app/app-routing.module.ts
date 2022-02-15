@@ -22,9 +22,18 @@ const routes: Routes = [
       {
         path: ':oid',
         component: ProductContentComponent,
+
         children: [
           {
+            path: ':content',
+            component: MsgContentComponent,
+          },
+          {
             path: 'msg',
+            component: MsgContentComponent,
+          },
+          {
+            path: 'tsp',
             component: MsgContentComponent,
           },
         ],
@@ -34,7 +43,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      paramsInheritanceStrategy: 'always',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
