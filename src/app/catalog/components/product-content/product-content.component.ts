@@ -20,7 +20,12 @@ import {
 import { BaseComponent } from 'src/app/shared/components/base-component.directive';
 import { ProductActions } from '../../store/catalog.actions';
 import { CatalogState, ContentType, ProductStatus } from '../../store/catalog.reducer';
-import { selectCurrentCatalog, selectProductStatus, selectSelectedContentType } from '../../store/catalog.selector';
+import {
+  selectCurrentCatalog,
+  selectProductStatus,
+  selectSelectedContentType,
+  selectStatusAndContentType,
+} from '../../store/catalog.selector';
 
 @Component({
   selector: 'app-product-content',
@@ -37,50 +42,20 @@ export class ProductContentComponent extends BaseComponent {
   constructor(private readonly store: Store<CatalogState>, private readonly route: ActivatedRoute) {
     super();
 
-    this.triggerSelectorWithRouteParams();
-
     this.statusControl.valueChanges.subscribe((status: Array<ProductStatus>) => {
       this.store.dispatch(ProductActions.selectProductStatus({ status: new Set(status) }));
     });
 
-    this.vo$ = combineLatest([
-      this.store.select(selectProductStatus),
-      this.store.select(selectSelectedContentType),
-    ]).pipe(
-      tap(([status]) =>
-        this.statusControl.patchValue(Array.from(status), {
+    this.vo$ = this.store.select(selectStatusAndContentType).pipe(
+      tap(({ productStatus }) =>
+        this.statusControl.patchValue(Array.from(productStatus), {
           emitEvent: false,
         })
       ),
-      map(([productStatus, contentType]) => ({
+      map(({ productStatus, contentType }) => ({
         productStatus,
         contentType,
       }))
     );
-  }
-
-  private triggerSelectorWithRouteParams() {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.destroyed),
-        map((params) => {
-          const oid = params.get('oid');
-          return oid ? +oid : undefined;
-        }),
-        filter((oid): oid is number => oid !== undefined),
-        switchMap((oid) =>
-          forkJoin([
-            of(oid),
-            this.store.select(selectCurrentCatalog).pipe(
-              filter((c): c is string => c !== undefined),
-              take(1)
-            ),
-            this.store.select(selectSelectedContentType).pipe(take(1)),
-          ])
-        )
-      )
-      .subscribe(([oid, currentCatalog, contentType]) => {
-        this.store.dispatch(ProductActions.getContent({ contentType, oid, cultureCode: currentCatalog }));
-      });
   }
 }

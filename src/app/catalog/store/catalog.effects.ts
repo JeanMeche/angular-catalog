@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { combineLatest, forkJoin, of, withLatestFrom } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { catchError, filter, first, map, mergeMap, switchMap, take, tap, timeout } from 'rxjs/operators';
 import {
   selectRouteParams,
   selectCurrentRoute,
   selectQueryParams,
   selectRouteParam,
 } from 'src/app/router/router.selector';
+import { isDefined } from 'src/app/shared/helper';
 import { CatalogActions, CategoriesActions, ProductActions } from './catalog.actions';
 import { CatalogState, Content, ContentType } from './catalog.reducer';
 import { CatalogResource } from './catalog.resource';
-import { selectCurrentCatalog, selectSelectedCategory, selectSelectedContentType } from './catalog.selector';
+import {
+  selectCurrentCatalog,
+  selectProductStatus,
+  selectSelectedCategory,
+  selectSelectedContentType,
+} from './catalog.selector';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogEffects {
@@ -36,7 +42,10 @@ export class CatalogEffects {
   initSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CatalogActions.initSuccess),
-      map((action) => CatalogActions.selectCatalog({ selectedCatalog: action.catalogs[0].code }))
+      withLatestFrom(this.store.select(selectRouteParam('catalogId'))),
+      map(([action, catalogId]) =>
+        CatalogActions.selectCatalog({ selectedCatalog: catalogId ?? action.catalogs[0].code })
+      )
     )
   );
 
@@ -46,8 +55,11 @@ export class CatalogEffects {
       withLatestFrom(this.store.select(selectSelectedCategory)),
       tap(([action, cat]) => {
         if (cat) {
-          this.router.navigate(['catalog', action.selectedCatalog, cat.oid, 'msg']);
-          // this.router.navigate(['catalog', action.selectedCatalog]);
+          if (cat.cultureCode === action.selectedCatalog) {
+            this.router.navigate(['catalog', action.selectedCatalog, cat.oid, 'msg']);
+          } else {
+            this.router.navigate(['catalog', action.selectedCatalog]);
+          }
         }
       }),
       map(() => CategoriesActions.initTree())
@@ -122,24 +134,59 @@ export class CatalogEffects {
     );
   });
 
+  getContentSucces$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProductActions.getContentSuccess),
+      map((action) => {
+        const oids = action.content.parents.map((cat) => cat.oid);
+        return CategoriesActions.loadParentCategories({ oids });
+      })
+    );
+  });
+
+  loadParentCategories$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CategoriesActions.loadParentCategories),
+      switchMap((action) => {
+        return forkJoin([
+          this.store.select(selectProductStatus).pipe(filter(isDefined), first()),
+          this.store.select(selectCurrentCatalog).pipe(filter(isDefined), first()),
+          of(action.oids),
+        ]);
+      }),
+      switchMap(([status, catalog, oids]) => {
+        return combineLatest(
+          oids.map((oid) => {
+            return this.catalogResource.getSubCategories({ oid, cultureCode: catalog, status });
+          })
+        );
+      }),
+      map((categories) => {
+        return CategoriesActions.loadParentCategoriesSuccess({ categories });
+      })
+    );
+  });
+
   onProductContentRouteChange$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigationAction),
-      switchMap(() =>
+      switchMap(() => {
+        return this.store.select(selectRouteParam('oid')).pipe(take(1));
+      }),
+      filter(isDefined),
+      switchMap((oid: string) =>
         forkJoin([
-          this.store.select(selectRouteParam('catalogId')).pipe(take(1)),
-          this.store.select(selectRouteParam('oid')).pipe(
-            take(1),
-            map((v) => +(v ?? 0))
-          ),
+          this.store.select(selectCurrentCatalog).pipe(filter(isDefined), take(1)),
+          of(+oid),
           this.store.select(selectRouteParam('content')).pipe(
+            filter(isDefined),
             take(1),
             map((c) => c?.toLocaleUpperCase())
           ),
         ])
       ),
       map(([cultureCode, oid, content]) => {
-        return ProductActions.getContent({ contentType: content as ContentType, oid, cultureCode: cultureCode! });
+        return ProductActions.getContent({ contentType: content as ContentType, oid, cultureCode });
       })
     );
   });

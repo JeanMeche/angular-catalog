@@ -15,6 +15,13 @@ export const selectCurrentCatalog = createSelector(selectFeature, (state: Catalo
 
 export const selectCatalogs = createSelector(selectFeature, (state: CatalogState) => state.catalogs);
 
+export const selectCatalogsAndCurrent = createSelector(selectCatalogs, selectCurrentCatalog, (catalogs, current) => {
+  return {
+    catalogs,
+    current,
+  };
+});
+
 export const selectProductStatus = createSelector(selectFeature, (state: CatalogState) => state.productStatus);
 
 export const selectSelectedContentType = createSelector(selectFeature, (state: CatalogState) => state.selectedContent);
@@ -25,16 +32,31 @@ export const selectCatalogParams = createSelector(selectCurrentCatalog, selectPr
   return { catalog, status };
 });
 
-export const selectSelectedCategoryAndContentType = createSelector(
-  selectSelectedCategory,
-  selectCategories,
-  (
-    selectedCategory: { oid: number; selectedContent?: ContentType } | undefined,
-    categories: { list: Array<Category> }
-  ) => {
+export const selectStatusAndContentType = createSelector(
+  selectProductStatus,
+  selectSelectedContentType,
+  (productStatus, contentType) => {
     return {
-      category: categories.list.flatMap((cat) => cat.children ?? []).find((cat) => cat.oid === selectedCategory?.oid),
-      contentType: selectedCategory?.selectedContent,
+      productStatus,
+      contentType,
+    };
+  }
+);
+
+export const selectCategoriesAndSelected = createSelector(
+  selectCategories,
+  selectSelectedCategory,
+  (categories, current) => {
+    return { categories, current };
+  }
+);
+
+export const selectSelectedCategoryAndContentType = createSelector(
+  selectCategoriesAndSelected,
+  ({ current, categories }) => {
+    return {
+      category: categories.list.flatMap((cat) => cat.children ?? []).find((cat) => cat.oid === current?.oid),
+      contentType: current?.content,
     };
   }
 );

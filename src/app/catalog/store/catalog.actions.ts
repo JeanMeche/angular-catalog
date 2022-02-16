@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { BaseCategory, Catalog, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
+import { Catalog, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
 
 export namespace CatalogActions {
   export const init = createAction('[Catalog] Init');
@@ -18,6 +18,12 @@ export namespace CategoriesActions {
     props<{ oid: number; newCategories: Array<Category> }>()
   );
   export const loadSubcategoriesError = createAction('[Tree] load subcategories error', props<{ oid: number }>());
+
+  export const loadParentCategories = createAction('[Tree] load parent categories', props<{ oids: Array<number> }>());
+  export const loadParentCategoriesSuccess = createAction(
+    '[Tree] load parent categories success',
+    props<{ categories: Array<{ oid: number; children: Array<Category> }> }>()
+  );
 }
 
 export namespace ProductActions {

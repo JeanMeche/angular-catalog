@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable } from 'rxjs';
-import { BaseCategory, CatalogState, Content } from 'src/app/catalog/store/catalog.reducer';
+import { filter, map, Observable, tap } from 'rxjs';
+import { BaseCategory, CatalogState, Content, LoadableContent } from 'src/app/catalog/store/catalog.reducer';
 import { selectProductContent, selectProductContentByType } from 'src/app/catalog/store/catalog.selector';
+import { isDefined } from 'src/app/shared/helper';
 
 interface MsgContent {
   oid: number;
@@ -18,14 +19,15 @@ interface MsgContent {
   styleUrls: ['./msg-content.component.scss'],
 })
 export class MsgContentComponent {
-  vo$: Observable<{ content: MsgContent }>;
+  vo$: Observable<{ content?: MsgContent; isLoading: boolean }>;
 
   constructor(private readonly store: Store<CatalogState>) {
     this.vo$ = this.store.select(selectProductContentByType('MSG')).pipe(
-      filter((content): content is Content & {} => content !== undefined),
-      map((content): { content: MsgContent } => {
+      filter(isDefined),
+      map(({ items, isLoading }): { isLoading: boolean; content?: MsgContent } => {
         return {
-          content,
+          isLoading,
+          content: items,
         };
       })
     );

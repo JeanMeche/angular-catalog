@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CatalogComponent } from './catalog/catalog.component';
 import { MsgContentComponent } from './catalog/components/content/msg-content/msg-content.component';
+import { TscContentComponent } from './catalog/components/content/tsc-content/tsc-content.component';
 import { ProductContentComponent } from './catalog/components/product-content/product-content.component';
 
 const routes: Routes = [
@@ -34,7 +35,7 @@ const routes: Routes = [
           },
           {
             path: 'tsp',
-            component: MsgContentComponent,
+            component: TscContentComponent,
           },
         ],
       },

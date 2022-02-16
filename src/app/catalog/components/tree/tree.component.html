@@ -13,15 +13,18 @@
       </div>
     </ng-container>
     <content card-content>
-      <ul class="p-2 overflow-auto" *ngIf="!vo.isLoading">
+      <ul class="p-2 overflow-auto h-full" *ngIf="!vo.isLoading">
         <mat-tree
+          #tree
           [dataSource]="dataSource"
           [treeControl]="treeControl"
           [trackBy]="trackBy"
         >
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-            <button mat-icon-button disabled></button>
-            {{ node.value.label }}---
+            <mat-icon *ngIf="node.value.isProduct" class="text-gray-400">
+              description
+            </mat-icon>
+            {{ node.value.label }}
           </mat-tree-node>
 
           <mat-nested-tree-node
@@ -35,22 +38,23 @@
                 matTreeNodeToggle
               >
                 <div class="flex w-6 flex-shrink-0 justify-center">
-                  <ng-container *ngIf="!node.value.isProduct">
-                    <mat-icon
-                      class="mat-icon-rtl-mirror text-third"
-                      *ngIf="!node.value.isLoading"
-                    >
-                      {{ treeControl.isExpanded(node) ? "remove" : "add" }}
-                    </mat-icon>
-                    <mat-spinner *ngIf="node.value.isLoading" [diameter]="18">
-                    </mat-spinner>
-                  </ng-container>
-                  <mat-icon *ngIf="node.value.isProduct" class="text-gray-400"
-                    >description</mat-icon
+                  <mat-icon
+                    class="mat-icon-rtl-mirror text-third"
+                    *ngIf="!node.value.isLoading"
                   >
+                    {{ treeControl.isExpanded(node) ? "remove" : "add" }}
+                  </mat-icon>
+                  <mat-spinner *ngIf="node.value.isLoading" [diameter]="18">
+                  </mat-spinner>
                 </div>
                 <span
-                  (click)="selectCategory(node.value)"
+                  (click)="
+                    selectCategory(
+                      $event,
+                      node.value,
+                      treeControl.isExpanded(node)
+                    )
+                  "
                   class="category-label"
                   [class.is-selected]="node.value.oid === vo.selectedCategory"
                 >

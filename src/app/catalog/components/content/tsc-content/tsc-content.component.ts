@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter, map, Observable } from 'rxjs';
-import { BaseCategory, CatalogState, Content } from 'src/app/catalog/store/catalog.reducer';
+import { BaseCategory, CatalogState, Content, LoadableContent } from 'src/app/catalog/store/catalog.reducer';
 import { selectProductContentByType } from 'src/app/catalog/store/catalog.selector';
+import { isDefined } from 'src/app/shared/helper';
 
 interface TscContent {
   oid: number;
@@ -18,14 +19,15 @@ interface TscContent {
   styleUrls: ['./tsc-content.component.scss'],
 })
 export class TscContentComponent {
-  vo$: Observable<{ content: TscContent }>;
+  vo$: Observable<{ content?: TscContent; isLoading: boolean }>;
 
   constructor(private readonly store: Store<CatalogState>) {
     this.vo$ = this.store.select(selectProductContentByType('TSP')).pipe(
-      filter((content): content is Content & {} => content !== undefined),
-      map((content): { content: TscContent } => {
+      filter(isDefined),
+      map(({ isLoading, items }): { content?: TscContent; isLoading: boolean } => {
         return {
-          content,
+          isLoading,
+          content: items,
         };
       })
     );

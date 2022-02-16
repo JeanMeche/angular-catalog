@@ -66,9 +66,9 @@ export interface CatalogState {
   productStatus: Set<ProductStatus>;
   selectedContent: ContentType;
   selectedCategory?: {
+    cultureCode: string;
     oid: number;
-    content?: {[k in ContentType]: Content};
-    isLoading: boolean;
+    content?: { [k in ContentType]?: LoadableContent<Content> };
   };
 }
 
@@ -80,11 +80,13 @@ export type Content<T = { key: string; value: string }> = {
   parents: Array<BaseCategory>;
 };
 
+export type LoadableContent<T extends Content> = { isLoading: boolean; items?: T };
+
 export const initialState: CatalogState = {
   catalogs: [],
   isLoading: false,
   search: {},
-  categories: { isLoading: false, list: [] },
+  categories: { isLoading: true, list: [] },
   productStatus: new Set(['L', 'O']),
   selectedContent: 'MSG',
 };
@@ -93,7 +95,11 @@ export const reducer = createReducer(
   initialState,
   on(CatalogActions.init, (state) => ({ ...state, isLoading: true })),
   on(CatalogActions.initSuccess, (state, action) => ({ ...state, isLoading: false, catalogs: action.catalogs })),
-  on(CatalogActions.selectCatalog, (state, action) => ({ ...state, selectedCatalog: action.selectedCatalog })),
+  on(CatalogActions.selectCatalog, (state, action) => ({
+    ...state,
+    selectedCatalog: action.selectedCatalog,
+    selectedCategory: undefined,
+  })),
 
   on(CategoriesActions.initTree, (state) => {
     return { ...state, categories: { list: [], isLoading: true } };
@@ -115,34 +121,55 @@ export const reducer = createReducer(
       });
     });
   }),
+  on(CategoriesActions.loadParentCategoriesSuccess, (state, list) => {
+    return produce(state, (draft) => {
+      list.categories.forEach((cat) => {
+        draft.categories.list.forEach((subCat, i) => {
+          draft.categories.list[i] = updateChildren(draft.categories.list[i], cat.oid, cat.children);
+        });
+      })
+    });
+  }),
 
   on(ProductActions.selectProductStatus, (state, { status }) => {
     return { ...state, productStatus: status };
   }),
   on(ProductActions.selectCategory, (state, { category }) => {
-    return {
-      ...state,
-      selectedCategory: {
+    return produce(state, (draft) => {
+      draft.selectedCategory = {
         oid: category.oid,
+        cultureCode: category.cultureCode,
         content: undefined,
-        isLoading: true,
-      },
-    };
+      };
+    });
   }),
 
-  on(ProductActions.getContentSuccess, (state, { oid, contentType, content }) => {
-    const retVal: CatalogState = {
-      ...state,
-      selectedCategory: {
-        oid,
-        ...state.selectedCategory,
-        content: {
-          [contentType]: content,
-        } as any,
-        isLoading: false,
-      },
-    };
-    return retVal;
+  on(ProductActions.getContent, (state, { contentType, oid, cultureCode }) => {
+    return produce(state, (draft) => {
+      if (!draft.selectedCategory) {
+        draft.selectedCategory = {
+          oid,
+          cultureCode,
+          content: {},
+        };
+      }
+
+      if (!draft.selectedCategory.content) {
+        draft.selectedCategory.content = { [contentType]: { isLoading: true } };
+      } else {
+        draft.selectedCategory.content[contentType] = { isLoading: true };
+      }
+    });
+  }),
+
+  on(ProductActions.getContentSuccess, (state, { contentType, content }) => {
+    return produce(state, (draft) => {
+      const _content = draft.selectedCategory?.content?.[contentType];
+      if (_content) {
+        _content.items = content;
+        _content.isLoading = false;
+      }
+    });
   })
 );
 

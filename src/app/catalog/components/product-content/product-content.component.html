@@ -1,4 +1,4 @@
-<ng-container *ngIf="vo$ | async; let vo">
+<div class="flex flex-col h-full" *ngIf="vo$ | async; let vo">
   <h3>Product Status</h3>
   <mat-button-toggle-group
     name="product-status"
@@ -68,7 +68,7 @@
     <a mat-tab-link>PLC</a>
   </nav>
 
-  <div>
+  <div class="flex-1">
     <router-outlet></router-outlet>
   </div>
-</ng-container>
+</div>

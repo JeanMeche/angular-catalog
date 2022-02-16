@@ -1,12 +1,15 @@
 <ng-container *ngIf="vo$ | async; let vo">
-  <app-card class="flex-1 min-w-0">
+  <app-card class="flex-1 min-w-0 h-full">
     <ng-container card-header>
-    <app-parent-tree [parents]="vo.content.parents"></app-parent-tree>
+      <app-parent-tree
+        *ngIf="vo.content"
+        [parents]="vo.content.parents"
+      ></app-parent-tree>
     </ng-container>
 
     <content card-content>
       <mat-tab-nav-panel #tabPanel>
-        <div class="flex justify-center p-4">
+        <div class="flex justify-center p-4" *ngIf="vo.content">
           <table
             class="table-auto border-collapse border border-slate-300 rounded-md"
           >
@@ -33,6 +36,9 @@
               <td>{{ kv.value }}</td>
             </tr>
           </table>
+        </div>
+        <div class="flex h-full justify-center items-center" *ngIf="vo.isLoading">
+          <mat-spinner></mat-spinner>
         </div>
       </mat-tab-nav-panel>
     </content>

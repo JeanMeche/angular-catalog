@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, Observable } from 'rxjs';
+import { delay, map, Observable, startWith } from 'rxjs';
 import { CatalogActions } from '../../store/catalog.actions';
 import { Catalog, CatalogState } from '../../store/catalog.reducer';
-import { selectCatalogs, selectCurrentCatalog } from '../../store/catalog.selector';
+import { selectCatalogsAndCurrent } from '../../store/catalog.selector';
 
 @Component({
   selector: 'app-catalog-list',
@@ -14,16 +14,30 @@ import { selectCatalogs, selectCurrentCatalog } from '../../store/catalog.select
 export class CatalogListComponent implements OnInit {
   vo$: Observable<{
     catalogs: Array<Catalog>;
-    selectedCatalog: Catalog;
+    selectedCatalog?: Catalog;
+    isLoading: boolean;
   }>;
 
   constructor(private readonly store: Store<CatalogState>) {
-    this.vo$ = combineLatest([this.store.select(selectCatalogs), this.store.select(selectCurrentCatalog)]).pipe(
-      map(([catalogs, current]) => {
+    this.vo$ = this.store.select(selectCatalogsAndCurrent).pipe(
+      map(({ catalogs, current }) => {
+        const selectedCatalog = catalogs.find((c) => c.code === current);
+        if (selectedCatalog) {
+          return {
+            catalogs,
+            selectedCatalog,
+            isLoading: false,
+          };
+        }
+
         return {
-          catalogs,
-          selectedCatalog: catalogs.find((c) => c.code === current)!,
+          catalogs: [],
+          isLoading: true,
         };
+      }),
+      startWith({
+        catalogs: [],
+        isLoading: true,
       })
     );
   }

@@ -3,9 +3,9 @@ import { Subject } from 'rxjs';
 
 @Directive()
 export abstract class BaseComponent implements OnDestroy {
-  destroyed = new Subject();
+  destroyed$ = new Subject();
 
   ngOnDestroy(): void {
-    this.destroyed.complete();
+    this.destroyed$.complete();
   }
 }

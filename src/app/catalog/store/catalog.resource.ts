@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter, map, Observable, switchMap, withLatestFrom } from 'rxjs';
 import { CatalogService, ContentsService } from 'src/app/api';
+import { isDefined } from 'src/app/shared/helper';
 import { CatalogParser } from './catalog.parser';
-import { BaseCategory, Catalog, CatalogState, Category, Content, ContentType } from './catalog.reducer';
+import { BaseCategory, Catalog, CatalogState, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
 import { selectCatalogParams, selectCurrentCatalog, selectProductStatus } from './catalog.selector';
 
 export interface SearchAutocompleteResult {
@@ -31,7 +32,7 @@ export class CatalogResource {
 
   getCategories(): Observable<Array<Category>> {
     return this.store.select(selectCurrentCatalog).pipe(
-      filter((catalogCode): catalogCode is string => catalogCode !== undefined),
+      filter(isDefined),
       withLatestFrom(this.store.select(selectProductStatus)),
       switchMap(([catalogCode, status]) =>
         this.catalogService.cultureCodeOidChildrenGet({
@@ -45,7 +46,11 @@ export class CatalogResource {
     );
   }
 
-  getSubCategories(category: Category): Observable<{ oid: number; children: Array<Category> }> {
+  getSubCategories(category: {
+    oid: number;
+    status: Set<ProductStatus>;
+    cultureCode: string;
+  }): Observable<{ oid: number; children: Array<Category> }> {
     return this.catalogService
       .cultureCodeOidChildrenGet({
         cultureCode: category.cultureCode,
