@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import produce from 'immer';
-import { CatalogActions, CategoriesActions, ProductActions } from './catalog.actions';
+import { CatalogActions, CategoriesActions, ProductActions, RoutingActions } from './catalog.actions';
 
 export const featureKey = 'catalog';
 
@@ -15,17 +15,7 @@ export type ProductStatus = 'O' | 'F' | 'L';
 export const kvContentTypesList = ['MSG', 'TSP', 'SYS', 'LOG', 'PIC', 'OTH'] as const;
 export type kvContentTypes = typeof kvContentTypesList[number];
 
-export const contentTypeList = [
-  ...kvContentTypesList,
-  'IMG',
-  'DOC',
-  'LNK',
-  'HST',
-  'VID',
-  // 'RAT', ???? Todo: CHECK for this one
-  'MDA',
-  'RC',
-] as const;
+export const contentTypeList = [...kvContentTypesList, 'IMG', 'DOC', 'LNK', 'HST', 'VID', 'RAT', 'MDA', 'RC'] as const;
 export type ContentType = typeof contentTypeList[number];
 
 export type KnownKeys<T> = keyof {
@@ -62,6 +52,7 @@ export interface CatalogState {
   categories: {
     list: Array<Category>;
     isLoading: boolean;
+    hierarychy: 'F' | 'Q';
   };
   productStatus: Set<ProductStatus>;
   selectedContent: ContentType;
@@ -75,9 +66,11 @@ export interface CatalogState {
 export type Content<T = { key: string; value: string }> = {
   oid: number;
   productNumber?: string;
+  productLine?: string;
   productName: string;
   others: Array<T>;
   parents: Array<BaseCategory>;
+  level: number;
 };
 
 export type LoadableContent<T extends Content> = { isLoading: boolean; items?: T };
@@ -86,15 +79,26 @@ export const initialState: CatalogState = {
   catalogs: [],
   isLoading: false,
   search: {},
-  categories: { isLoading: true, list: [] },
+  categories: { isLoading: true, list: [], hierarychy: 'F' },
   productStatus: new Set(['L', 'O']),
   selectedContent: 'MSG',
 };
 
 export const reducer = createReducer(
   initialState,
+
+  on(RoutingActions.paramsFromRoute, (state, action) => ({
+    ...state,
+    selectedCatalog: action.catalogId,
+    selectedCategory: action.oid && action.catalogId ? { oid: action.oid, cultureCode: action.catalogId } : undefined,
+  })),
   on(CatalogActions.init, (state) => ({ ...state, isLoading: true })),
-  on(CatalogActions.initSuccess, (state, action) => ({ ...state, isLoading: false, catalogs: action.catalogs })),
+  on(CatalogActions.initSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    catalogs: action.catalogs,
+    selectedCatalog: state.selectedCatalog ?? action.catalogs[0].code,
+  })),
   on(CatalogActions.selectCatalog, (state, action) => ({
     ...state,
     selectedCatalog: action.selectedCatalog,
@@ -102,11 +106,17 @@ export const reducer = createReducer(
   })),
 
   on(CategoriesActions.initTree, (state) => {
-    return { ...state, categories: { list: [], isLoading: true } };
+    return { ...state, categories: { list: [], isLoading: true, hierarychy: state.categories.hierarychy } };
   }),
   on(CategoriesActions.initTreeSuccess, (state, { categories }) => {
-    return { ...state, categories: { list: categories, isLoading: false } };
+    return { ...state, categories: { list: categories, isLoading: false, hierarychy: state.categories.hierarychy } };
   }),
+  on(CategoriesActions.setTreeHierarchy, (state, { hierarchy }) => {
+    return produce(state, (draft) => {
+      draft.categories.hierarychy = hierarchy;
+    });
+  }),
+
   on(CategoriesActions.loadSubcategories, (state, { category: { oid } }) => {
     return produce(state, (draft) => {
       draft.categories.list.forEach((subCat, i) => {
@@ -127,7 +137,7 @@ export const reducer = createReducer(
         draft.categories.list.forEach((subCat, i) => {
           draft.categories.list[i] = updateChildren(draft.categories.list[i], cat.oid, cat.children);
         });
-      })
+      });
     });
   }),
 
@@ -142,6 +152,9 @@ export const reducer = createReducer(
         content: undefined,
       };
     });
+  }),
+  on(ProductActions.selectContent, (state, { content }) => {
+    return { ...state, selectedContent: content };
   }),
 
   on(ProductActions.getContent, (state, { contentType, oid, cultureCode }) => {

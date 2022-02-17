@@ -2,30 +2,11 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  combineLatest,
-  concatMap,
-  filter,
-  forkJoin,
-  map,
-  Observable,
-  of,
-  shareReplay,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { BaseComponent } from 'src/app/shared/components/base-component.directive';
 import { ProductActions } from '../../store/catalog.actions';
 import { CatalogState, ContentType, ProductStatus } from '../../store/catalog.reducer';
-import {
-  selectCurrentCatalog,
-  selectProductStatus,
-  selectSelectedContentType,
-  selectStatusAndContentType,
-} from '../../store/catalog.selector';
+import { selectStatusAndContentType } from '../../store/catalog.selector';
 
 @Component({
   selector: 'app-product-content',
@@ -38,6 +19,17 @@ export class ProductContentComponent extends BaseComponent {
     contentType: ContentType;
   }>;
   statusControl = new FormControl();
+
+  contentTypesLinks: Array<{ label: string; value: ContentType }> = [
+    { label: 'Messaging', value: 'MSG' },
+    { label: 'TechSpec', value: 'TSP' },
+    { label: 'Compatibilities', value: 'LOG' },
+    { label: 'Documents', value: 'DOC' },
+    { label: 'Images', value: 'IMG' },
+    { label: 'Videos', value: 'VID' },
+    { label: 'Ratings', value: 'RAT' },
+    { label: 'PLC', value: 'MDA' },
+  ];
 
   constructor(private readonly store: Store<CatalogState>, private readonly route: ActivatedRoute) {
     super();
@@ -57,5 +49,11 @@ export class ProductContentComponent extends BaseComponent {
         contentType,
       }))
     );
+
+    this.store.dispatch(ProductActions.selectContent({ content: 'MSG' }));
+  }
+
+  selectContentType(contentType: ContentType): void {
+    this.store.dispatch(ProductActions.selectContent({ content: contentType }));
   }
 }

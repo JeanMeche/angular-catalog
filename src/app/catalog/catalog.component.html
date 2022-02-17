@@ -1,9 +1,7 @@
 <div class="h-screen flex flex-col">
   <header class="h-16 bg-primary flex justify-between text-white">
     <div class="flex items-center brand pl-20 text-white">
-      <a [routerLink]="['/']" routerLinkActive="router-link-active" class=""
-        >Product Content Browser</a
-      >
+      <a [routerLink]="['/']" routerLinkActive="router-link-active" class="">Product Content Browser</a>
     </div>
     <div class="flex-1"></div>
     <button mat-button>Sign-in</button>
@@ -18,18 +16,12 @@
 
       <app-tree class="flex-1 min-h-0"></app-tree>
     </div>
-    <div
-      class="w-1 bg-primary h-full cursor-ew-resize"
-      #dragHandleRight
-      cdkDragLockAxis="x"
-      cdkDrag
-      (cdkDragStarted)="dragStart()"
-      (cdkDragMoved)="dragMove(dragHandleRight, $event)"
-    ></div>
+    <div class="w-1 bg-primary h-full cursor-ew-resize" #dragHandleRight cdkDragLockAxis="x" cdkDrag (cdkDragStarted)="dragStart()"
+      (cdkDragMoved)="dragMove(dragHandleRight, $event)"></div>
     <div class="flex flex-col flex-1 w-0 overflow-hidden px-2">
       <main class="relative flex-1 overflow-y-auto focus:outline-none">
         <div class="flex h-full py-6">
-          <div class="min-w-0">
+          <div class="min-w-0 w-full">
             <router-outlet></router-outlet>
           </div>
         </div>

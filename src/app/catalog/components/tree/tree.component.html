@@ -1,63 +1,62 @@
 <nav class="flex-1 space-y-1 bg-white h-full" *ngIf="vo$ | async; let vo">
   <app-card>
     <ng-container card-header>
-      <h1 class="font-medium text-gray-900">Hierarchy</h1>
-      <div class="">
-        <button
-          mat-icon-button
-          (click)="treeControl.collapseAll()"
-          [disabled]="isAllCollapsed()"
-        >
-          <mat-icon>unfold_less</mat-icon>
-        </button>
+      <div class="flex justify-between items-center w-full">
+        <h1 class="font-medium text-gray-900">Hierarchy</h1>
+        <div class="flex items-center justify-center">
+          <div class="inline-flex" role="group">
+            <button class="px-2 py-1 text-sm rounded-l-md " [ngClass]="vo.hierarchy === 'F' ? 'bg-secondary text-white' : 'bg-slate-300'"
+              (click)="selectHierarchy('F')">
+              Full </button>
+            <button class="px-2 py-1 text-sm rounded-r-md " [ngClass]="vo.hierarchy === 'Q' ? 'bg-secondary text-white' : 'bg-slate-300'"
+              (click)="selectHierarchy('Q')">
+              Quick
+            </button>
+          </div>
+        </div>
+        <div class="">
+          <button mat-icon-button (click)=" treeControl.collapseAll()" [disabled]="isAllCollapsed()">
+            <mat-icon>unfold_less</mat-icon>
+          </button>
+        </div>
       </div>
     </ng-container>
     <content card-content>
       <ul class="p-2 overflow-auto h-full" *ngIf="!vo.isLoading">
-        <mat-tree
-          #tree
-          [dataSource]="dataSource"
-          [treeControl]="treeControl"
-          [trackBy]="trackBy"
-        >
+        <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" [trackBy]="trackBy">
+
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-            <mat-icon *ngIf="node.value.isProduct" class="text-gray-400">
-              description
-            </mat-icon>
-            {{ node.value.label }}
+            <li class="flex flex-col">
+              <div class="mat-tree-node whitespace-nowrap cursor-pointer">
+                <mat-icon *ngIf="node.value.isProduct" class="text-gray-400">
+                  description
+                </mat-icon>
+                <span (click)="selectCategory($event, node.value)" class="category-label"
+                  [class.is-selected]="node.value.oid === vo.selectedCategory">
+                  {{ node.value.label }}
+                </span>
+              </div>
+            </li>
           </mat-tree-node>
 
-          <mat-nested-tree-node
-            *matTreeNodeDef="let node; when: hasChild"
-            matTreeNodePadding
-          >
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
             <li class="flex flex-col">
-              <div
-                class="mat-tree-node whitespace-nowrap cursor-pointer"
-                [attr.aria-label]="'Toggle ' + node.value.label"
-                matTreeNodeToggle
-              >
+              <div class="mat-tree-node whitespace-nowrap cursor-pointer" [attr.aria-label]="'Toggle ' + node.value.label"
+                matTreeNodeToggle>
                 <div class="flex w-6 flex-shrink-0 justify-center">
-                  <mat-icon
-                    class="mat-icon-rtl-mirror text-third"
-                    *ngIf="!node.value.isLoading"
-                  >
+                  <mat-icon class="mat-icon-rtl-mirror text-third" *ngIf="!node.value.isLoading">
                     {{ treeControl.isExpanded(node) ? "remove" : "add" }}
                   </mat-icon>
                   <mat-spinner *ngIf="node.value.isLoading" [diameter]="18">
                   </mat-spinner>
                 </div>
-                <span
-                  (click)="
+                <span (click)="
                     selectCategory(
                       $event,
                       node.value,
                       treeControl.isExpanded(node)
                     )
-                  "
-                  class="category-label"
-                  [class.is-selected]="node.value.oid === vo.selectedCategory"
-                >
+                  " class="category-label" [class.is-selected]="node.value.oid === vo.selectedCategory">
                   {{ node.value.label }}
                 </span>
               </div>

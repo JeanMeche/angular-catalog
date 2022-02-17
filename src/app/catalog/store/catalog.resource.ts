@@ -4,7 +4,7 @@ import { filter, map, Observable, switchMap, withLatestFrom } from 'rxjs';
 import { CatalogService, ContentsService } from 'src/app/api';
 import { isDefined } from 'src/app/shared/helper';
 import { CatalogParser } from './catalog.parser';
-import { BaseCategory, Catalog, CatalogState, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
+import { Catalog, CatalogState, Category, Content, ContentType, ProductStatus } from './catalog.reducer';
 import { selectCatalogParams, selectCurrentCatalog, selectProductStatus } from './catalog.selector';
 
 export interface SearchAutocompleteResult {
@@ -46,16 +46,19 @@ export class CatalogResource {
     );
   }
 
-  getSubCategories(category: {
-    oid: number;
-    status: Set<ProductStatus>;
-    cultureCode: string;
-  }): Observable<{ oid: number; children: Array<Category> }> {
+  getSubCategories(
+    category: {
+      oid: number;
+      status: Set<ProductStatus>;
+      cultureCode: string;
+    },
+    hierarchy: 'F' | 'Q'
+  ): Observable<{ oid: number; children: Array<Category> }> {
     return this.catalogService
       .cultureCodeOidChildrenGet({
         cultureCode: category.cultureCode,
         oid: `${category.oid}`,
-        hierarchyParadigm: 'F',
+        hierarchyParadigm: hierarchy,
         status: category.status,
       })
       .pipe(

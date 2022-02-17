@@ -52,8 +52,10 @@ export class CatalogParser {
       oid: content.oid,
       productName: content.name,
       productNumber: content.productNumber,
+      productLine: content.productLine,
       others: this.parseTableContent(content.contents, contentType),
       parents: content.path?.map((node) => this.parseNode(node)) ?? [],
+      level: content.level,
     };
   }
 

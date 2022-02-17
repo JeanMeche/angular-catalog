@@ -1,3 +1,47 @@
-<p>
-  tsc-content works!
-</p>
+<ng-container *ngIf="vo$ | async; let vo">
+  <app-external-access contentType="TSP"></app-external-access>
+  <app-card class="flex-1 min-w-0 h-full">
+    <ng-container card-header>
+      <app-parent-tree *ngIf="vo.content" [parents]="vo.content.parents"></app-parent-tree>
+    </ng-container>
+
+    <content card-content>
+      <mat-tab-nav-panel #tabPanel>
+        <div class="flex flex-col justify-center p-4" *ngIf="vo.content">
+          <h1 class="text-center">{{vo.content.productNumber}} — {{vo.content.productName}}</h1>
+          <table class="table-auto border-collapse border border-slate-300 rounded-md">
+            <thead class="bg-slate-600 text-white">
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tr>
+              <td>OID</td>
+              <td>{{ vo.content.oid }}</td>
+            </tr>
+            <tr *ngIf="vo.content.productNumber">
+              <td>Product number</td>
+              <td>{{ vo.content.productNumber }}</td>
+            </tr>
+            <tr>
+              <td>Product name</td>
+              <td>{{ vo.content.productName }}</td>
+            </tr>
+            <tr *ngIf="vo.content.productLine">
+              <td>Product number</td>
+              <td>{{ vo.content.productLine }}</td>
+            </tr>
+            <tr *ngFor="let kv of vo.content.others">
+              <td>{{ kv.key }}</td>
+              <td>{{ kv.value }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="flex h-full justify-center items-center" *ngIf="vo.isLoading">
+          <mat-spinner></mat-spinner>
+        </div>
+      </mat-tab-nav-panel>
+    </content>
+  </app-card>
+</ng-container>

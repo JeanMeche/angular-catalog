@@ -1,0 +1,37 @@
+<div class="flex m-4 gap-12 items-center" *ngIf="vo$ | async; let vo">
+  <div class="asset-hub">
+    <span class="mr-4">Go to</span>
+    <button class="pcb-button" matTooltip="Go to Asset Hub for the selected node" (click)="goToAssetHub()">
+      Asset Hub
+    </button>
+  </div>
+  <div class="view-in flex gap-3 items-center" *ngIf="vo.level">
+    <span>View In: </span>
+    <ng-container *ngIf="vo.level === 5 || vo.level ===7 ">
+      <button class="pcb-button" matTooltip="" (click)="goToAssetHub()">
+        HP.com
+      </button>
+      <button class="pcb-button" matTooltip="" (click)="goToAssetHub()">
+        CNET
+      </button>
+      <button class="pcb-button" matTooltip="" (click)="goToAssetHub()">
+        FlixMedia
+      </button>
+    </ng-container>
+    <div *ngIf="vo.level!==5 && vo.level!==7 ">
+      available in level 5 (Series) and 7 (Products)
+    </div>
+  </div>
+  <div class=" view-as flex gap-3 items-center" *ngIf="vo.level">
+    <span>View as: </span>
+    <ng-container *ngIf="vo.level ===7 ">
+      <button class="pcb-button" matTooltip="Go to Asset Hub for the selected node" (click)="goToAssetHub()">
+        SpecSheet
+      </button>
+      <button class="pcb-button" matTooltip="Go to Asset Hub for the selected node" (click)="goToAssetHub()">
+        ProductSheet
+      </button>
+    </ng-container>
+    <div *ngIf="vo.level !==7 ">available in level 7 (Products)</div>
+  </div>
+</div>

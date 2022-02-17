@@ -1,43 +1,33 @@
 import { CollectionViewer } from '@angular/cdk/collections';
-import { NestedTreeControl } from '@angular/cdk/tree';
+import { Injectable, OnDestroy } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, filter, map, Observable, take, tap } from 'rxjs';
+import { BehaviorSubject, filter, first, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { CategoriesActions } from '../../store/catalog.actions';
 import { CatalogState, Category } from '../../store/catalog.reducer';
 import { selectCategories } from '../../store/catalog.selector';
+import { CategoryTreeControl } from './tree-control';
 
-export class DynamicDataSource extends MatTreeNestedDataSource<TreeNode<Category>> {
-  constructor(
-    private store: Store<CatalogState>,
-    private treeControl: NestedTreeControl<TreeNode<Category>>,
-    private actions$: Actions
-  ) {
+@Injectable({ providedIn: 'root' })
+export class DynamicDataSource extends MatTreeNestedDataSource<TreeNode<Category>> implements OnDestroy {
+  private onDestroyed$ = new Subject();
+
+  constructor(private store: Store<CatalogState>, private treeControl: CategoryTreeControl, private actions$: Actions) {
     super();
+
+    this.actions$
+      .pipe(ofType(CategoriesActions.loadParentCategoriesSuccess))
+      .pipe(takeUntil(this.onDestroyed$))
+      .subscribe((action) => {
+        this.addCategories(action.categories);
+      });
+
     this.treeControl.expansionModel.changed.subscribe((change) => {
-      console.log('exp');
       if (change.added && change.added.length > 0) {
         const changedCategoryNode = change.added[0];
-        console.log(changedCategoryNode);
+        this.subscribeLoadSubcategoriesUpdate(changedCategoryNode);
 
-        this.actions$
-          .pipe(
-            ofType(CategoriesActions.loadSubcategoriesSuccess),
-            filter((action) => action.oid === changedCategoryNode.value.oid),
-            take(1)
-          )
-          .subscribe(({ newCategories }) => changedCategoryNode.addchildren(newCategories.map(this.toNode)));
-
-        this.actions$
-          .pipe(
-            ofType(CategoriesActions.loadSubcategoriesError),
-            filter((action) => action.oid === changedCategoryNode.value.oid),
-            take(1)
-          )
-          .subscribe(() => {
-            changedCategoryNode.isLoading(false);
-          });
         if (changedCategoryNode.children.length === 0) {
           changedCategoryNode.isLoading();
           this.store.dispatch(
@@ -50,27 +40,36 @@ export class DynamicDataSource extends MatTreeNestedDataSource<TreeNode<Category
     });
   }
 
-  override connect(collectionViewer: CollectionViewer): Observable<Array<TreeNode<Category>>> {
-    return this.store.select(selectCategories).pipe(
-      map((cats) => cats.list.map((c) => this.toNode(c))),
-      tap((nodes) => {
-        this.treeControl.dataNodes = nodes;
-        console.log('connect', nodes);
-      })
-    );
+  ngOnDestroy(): void {
+    this.onDestroyed$.complete();
   }
 
-  addCategories(categories: Array<{ oid: number; children: Array<Category> }>) {
-    const nodes = this.flatten(this.treeControl.dataNodes);
-    categories.forEach((cat) => {
-      const node = nodes.find((n) => n.value.oid === cat.oid);
-      // console.log(node, node?.value.label);
-      node!.addchildren(cat.children.map(this.toNode));
-    });
-    this.treeControl.expansionModel.toggle(nodes[0]);
-    console.log('update');
-    //.select(nodes[0]);
-    console.log(this.treeControl.expansionModel);
+  override connect(collectionViewer: CollectionViewer): Observable<Array<TreeNode<Category>>> {
+    return this.store
+      .select(selectCategories)
+      .pipe(first())
+      .pipe(
+        map((cats) => cats.list.map((c) => this.toNode(c))),
+        tap((nodes) => {
+          this.treeControl.dataNodes = nodes;
+        })
+      );
+  }
+
+  addCategories(
+    categories: Array<{ oid: number; children: Array<Category> }>,
+    nodes: Array<TreeNode<Category>> = this.treeControl.dataNodes
+  ) {
+    if (categories.length > 0) {
+      const [firstCat, ...rest] = categories;
+      const node = nodes.find((n) => n.value.oid === firstCat.oid);
+      if (node) {
+        const childNodes = firstCat.children.map(this.toNode);
+        node.addchildren(childNodes);
+        this.treeControl.expansionModel.toggle(node);
+        this.addCategories(rest, childNodes);
+      }
+    }
   }
 
   private toNode(category: Category): TreeNode<Category> {
@@ -80,9 +79,27 @@ export class DynamicDataSource extends MatTreeNestedDataSource<TreeNode<Category
     );
   }
 
-  private flatten = (nodes: Array<TreeNode<Category>>): Array<TreeNode<Category>> => {
-    return nodes.flatMap((node) => [node, ...(node.children ? this.flatten(node.children) : [])]);
-  };
+  private subscribeLoadSubcategoriesUpdate(changedCategoryNode: TreeNode<Category>) {
+    this.actions$
+      .pipe(
+        takeUntil(this.onDestroyed$),
+        ofType(CategoriesActions.loadSubcategoriesSuccess),
+        filter((action) => action.oid === changedCategoryNode.value.oid),
+        take(1)
+      )
+      .subscribe(({ newCategories }) => changedCategoryNode.addchildren(newCategories.map(this.toNode)));
+
+    this.actions$
+      .pipe(
+        takeUntil(this.onDestroyed$),
+        ofType(CategoriesActions.loadSubcategoriesError),
+        filter((action) => action.oid === changedCategoryNode.value.oid),
+        take(1)
+      )
+      .subscribe(() => {
+        changedCategoryNode.isLoading(false);
+      });
+  }
 }
 
 export class TreeNode<T> {
