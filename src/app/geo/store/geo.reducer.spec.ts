@@ -1,5 +1,5 @@
-import { TreeActions } from './tree.action';
-import { treeReducer } from './tree.reducer';
+import { TreeActions } from './geo.action';
+import { treeReducer } from './geo.reducer';
 import { Category } from './tree.state';
 
 describe('Reducer: Tree', () => {

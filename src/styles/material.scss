@@ -1,0 +1,26 @@
+@use '@angular/material'as mat;
+
+@import '~@angular/material/theming';
+
+$my-primary: mat-palette($mat-light-blue, 300, 500, 900);
+$my-accent: mat-palette($mat-orange, 300, 500, 900);
+$my-warn: mat-palette($mat-red, 200);
+
+$my-palette:(primary: $my-primary,
+  accent: $my-accent,
+  warn: $my-warn,
+);
+
+$my-theme: mat.define-light-theme((color: $my-palette));
+
+@include mat.all-component-themes($my-theme);
+@include mat.core();
+
+
+.mat-button-toggle-checked {
+  background-color: var(--secondary-color);
+
+  .mat-button-toggle-label-content {
+    color: white;
+  }
+}

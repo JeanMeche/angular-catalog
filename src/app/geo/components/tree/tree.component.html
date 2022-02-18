@@ -1,0 +1,87 @@
+<nav class="flex-1 space-y-1 bg-white h-full" *ngIf="vo$ | async; let vo">
+  <app-card>
+    <ng-container card-header>
+      <div class="flex justify-between items-center w-full">
+        <h1 class="font-medium text-gray-900">Hierarchy</h1>
+        <div class="flex items-center justify-center">
+          <div class="inline-flex" role="group"></div>
+        </div>
+        <div class="">
+          <button
+            mat-icon-button
+            (click)="treeControl.collapseAll()"
+            [disabled]="isAllCollapsed()"
+          >
+            <mat-icon>unfold_less</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <content card-content>
+      <ul class="p-2 overflow-auto h-full" *ngIf="!vo.isLoading">
+        <mat-tree
+          #tree
+          [dataSource]="dataSource"
+          [treeControl]="treeControl"
+          [trackBy]="trackBy"
+        >
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+            <li class="flex flex-col">
+              <div class="mat-tree-node whitespace-nowrap cursor-pointer">
+                <mat-icon *ngIf="node.value.isProduct" class="text-gray-400">
+                  description
+                </mat-icon>
+                <span
+                  class="category-label"
+                  [class.is-selected]="node.value.id === vo.selectedGeo"
+                  (click)="selectCommune($event, node.value)"
+                >
+                  {{ node.value.nom }}
+                </span>
+              </div>
+            </li>
+          </mat-tree-node>
+
+          <mat-nested-tree-node
+            *matTreeNodeDef="let node; when: hasChild"
+            matTreeNodePadding
+          >
+            <li class="flex flex-col">
+              <div
+                class="mat-tree-node whitespace-nowrap cursor-pointer"
+                [attr.aria-label]="'Toggle ' + node.value.label"
+                matTreeNodeToggle
+              >
+                <div class="flex w-6 flex-shrink-0 justify-center">
+                  <mat-icon
+                    class="mat-icon-rtl-mirror text-third"
+                    *ngIf="!node.value.isLoading"
+                  >
+                    {{ treeControl.isExpanded(node) ? "remove" : "add" }}
+                  </mat-icon>
+                  <mat-spinner *ngIf="node.value.isLoading" [diameter]="18">
+                  </mat-spinner>
+                </div>
+                <span
+                  class="category-label"
+                  [class.is-selected]="node.value.id === vo.selectedGeo"
+                  (click)="
+                    selectGeo($event, node.value, treeControl.isExpanded(node))
+                  "
+                >
+                  {{ node.value.nom }}
+                </span>
+              </div>
+              <ul [class.hidden]="!treeControl.isExpanded(node)" role="group">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </ul>
+            </li>
+          </mat-nested-tree-node>
+        </mat-tree>
+      </ul>
+      <div *ngIf="vo.isLoading" class="flex items-center justify-center h-full">
+        <mat-spinner></mat-spinner>
+      </div>
+    </content>
+  </app-card>
+</nav>

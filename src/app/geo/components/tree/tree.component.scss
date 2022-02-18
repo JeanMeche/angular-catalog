@@ -1,0 +1,68 @@
+mat-tree {
+  --tree-color: var(--third-color);
+
+  .mat-tree-node {
+    padding: 0;
+    min-height: auto;
+  }
+
+
+  ul {
+    position: relative;
+    margin-left: 10px;
+    overflow: hidden;
+
+    &:before {
+      content: "";
+      display: block;
+      width: 0;
+      position: absolute;
+      top: -1em;
+      bottom: 0;
+      left: 0;
+      border-left: 1px solid var(--tree-color);
+    }
+
+    li {
+      position: relative;
+      padding-left: 0.8em;
+      padding-top: 4px;
+
+      &:before {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 0;
+        border-top: 1px solid var(--tree-color);
+        margin-top: -1px;
+        position: absolute;
+        top: 1em;
+        left: 0;
+      }
+    }
+
+    .mat-nested-tree-node {
+      &:last-child {
+        >li {
+          &:before {
+            background: #fff;
+            height: auto;
+            top: 1em;
+            bottom: 0;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.category-label {
+  padding: 2px 4px;
+  border-radius: 8px;
+
+  &.is-selected {
+    background: var(--primary-color);
+    color: white;
+  }
+}

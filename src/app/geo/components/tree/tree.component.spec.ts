@@ -5,9 +5,9 @@ import { DebugElement } from '@angular/core';
 
 import { TreeComponent } from './tree.component';
 import { StoreModule } from '@ngrx/store';
-import { featureKey, treeReducer } from '../../store/tree.reducer';
+import { featureKey, treeReducer } from '../../store/geo.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { TreeEffects } from '../../store/tree.effects';
+import { TreeEffects } from '../../store/geo.effects';
 
 describe('TreeComponent', () => {
   let component: TreeComponent;
