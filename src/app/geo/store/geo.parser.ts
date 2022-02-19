@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CommuneBE, DepartementBE, RegionBE } from 'src/app/api';
-import { Commune, CommuneDetail, Departement, Region } from './geo.reducer';
+import { Commune, CommuneDetail, Departement, Region } from './geo.interface';
 
 @Injectable({ providedIn: 'root' })
 export class GeoParser {
@@ -52,11 +52,13 @@ export class GeoParser {
       codeCommune: commune.code!,
       codeDepartement: commune.codeDepartement!,
       codeRegion: commune.codeRegion!,
+      region: { code: commune.region!.code!, nom: commune.region!.nom! },
+      departement: { code: commune.departement!.code!, nom: commune.departement!.nom! },
       codesPostaux: commune.codesPostaux!,
       population: commune.population!,
       surface: commune.surface!,
       contour: commune.contour!,
-      centre: commune.centre!,
+      centre: { coordinates: (commune.centre as any).coordinates },
       type: 'Commune',
     };
   }

@@ -1,5 +1,4 @@
 import { CollectionViewer } from '@angular/cdk/collections';
-import { NestedTreeControl } from '@angular/cdk/tree';
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Actions, ofType } from '@ngrx/effects';
@@ -7,21 +6,19 @@ import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
   combineLatest,
-  concat,
   filter,
   first,
-  forkJoin,
   map,
   Observable,
   of,
   Subject,
   switchMap,
-  take,
   takeUntil,
   tap,
 } from 'rxjs';
 import { GeoActions } from '../../store/geo.action';
-import { GeoState, GeoTypes } from '../../store/geo.reducer';
+import { GeoTypes } from '../../store/geo.interface';
+import { GeoState } from '../../store/geo.reducer';
 import { selectRegions } from '../../store/geo.selector';
 import { GeoTreeControl } from './tree-control';
 
@@ -50,10 +47,9 @@ export class DynamicDataSource extends MatTreeNestedDataSource<TreeNode<GeoTypes
         }),
         switchMap((changedCategoryNode) =>
           combineLatest([of(changedCategoryNode), this.actions$.pipe(ofType(GeoActions.loadGeoSuccess))])
-        ),
+        )
       )
       .subscribe(([changedCategoryNode, geo]) => {
-        console.log(geo);
         changedCategoryNode.addchildren(geo.geos.map(this.toNode));
       });
   }

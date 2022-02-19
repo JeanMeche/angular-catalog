@@ -1,46 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
-import { GeoActions } from './geo.action';
 import { produce } from 'immer';
+import { GeoActions } from './geo.action';
+import { CommuneDetail, Region } from './geo.interface';
 
 export const featureKey = 'geo';
 
-type GeoBase = {
-  id: string;
-  codeRegion: string;
-  nom: string;
-  type: 'Region' | 'Departement' | 'Commune';
-};
-
-export type Region = GeoBase & {
-  departements: Array<Departement>;
+export type GeoState = {
+  regions: Array<Region>;
   isLoading: boolean;
-  type: 'Region';
+  selectedGeo?: string;
+  communeDetail?: CommuneDetail;
 };
-
-export type Departement = GeoBase & {
-  codeDepartement: string;
-  communes: Array<Commune>;
-  isLoading: boolean;
-  type: 'Departement';
-};
-
-export type Commune = GeoBase & {
-  codeCommune: string;
-  codesPostaux: Array<string>;
-  codeDepartement: string;
-  type: 'Commune';
-};
-
-export type CommuneDetail = Commune & {
-  population: number;
-  surface: number;
-  centre: object;
-  contour: object;
-};
-
-export type GeoTypes = Region | Departement | Commune;
-
-export type GeoState = { regions: Array<Region>; isLoading: boolean; selectedGeo?: string };
 
 const initialState: GeoState = { regions: [], isLoading: true };
 
@@ -104,6 +74,11 @@ export const geoReducer = createReducer(
   on(GeoActions.selectCommune, (state, { commune }) => {
     return produce(state, (draft) => {
       draft.selectedGeo = commune.id;
+    });
+  }),
+  on(GeoActions.loadCommuneSuccess, (state, { commune }) => {
+    return produce(state, (draft) => {
+      draft.communeDetail = commune;
     });
   })
 );

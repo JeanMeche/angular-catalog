@@ -1,13 +1,14 @@
-@import './styles/material.scss';
+@import "./styles/material.scss";
+@import "./styles/components.scss";
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
-  --primary-color: #0096D6;
+  --primary-color: #0096d6;
   --secondary-color: #069;
-  --third-color: #0096D6;
+  --third-color: #0096d6;
 
   --warn-color: #ffa500;
   --error-color: #ff0000;

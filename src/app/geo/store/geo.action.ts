@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Commune, CommuneDetail, Departement, GeoTypes, Region } from './geo.reducer';
+import { Commune, CommuneDetail, Departement, GeoTypes, Region } from './geo.interface';
 
 export namespace GeoActions {
   export const loadRegions = createAction('[Geo] load Regions');

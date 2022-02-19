@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 import { GeoActions } from './geo.action';
 import { GeoResource } from './geo.resource';
 

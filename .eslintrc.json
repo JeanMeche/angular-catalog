@@ -17,9 +17,13 @@
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "comma-dangle": [
+          "error",
+          "only-multiline"
+        ],
         "indent": [
           "error",
           2

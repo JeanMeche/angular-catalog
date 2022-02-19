@@ -1,19 +1,21 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTreeModule } from '@angular/material/tree';
+import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TreeComponent } from './components/tree/tree.component';
-import { StoreModule } from '@ngrx/store';
+import { MatTreeModule } from '@angular/material/tree';
 import { EffectsModule } from '@ngrx/effects';
-import { TreeEffects } from './store/geo.effects';
-import { featureKey, geoReducer } from './store/geo.reducer';
+import { StoreModule } from '@ngrx/store';
 import { ApiModule } from '../api';
 import { CardComponent } from './components/card/card.component';
+import { CommuneDetailComponent } from './components/commune-detail/commune-detail.component';
+import { GeoComponent } from './components/geo/geo.component';
+import { TreeComponent } from './components/tree/tree.component';
+import { TreeEffects } from './store/geo.effects';
+import { featureKey, geoReducer } from './store/geo.reducer';
 
 @NgModule({
-  declarations: [TreeComponent, CardComponent],
-  exports: [TreeComponent, MatIconModule],
+  declarations: [GeoComponent, TreeComponent, CardComponent, CommuneDetailComponent],
+  exports: [],
   imports: [
     ApiModule,
     CommonModule,

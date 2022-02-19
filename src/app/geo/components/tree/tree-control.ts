@@ -1,6 +1,6 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
-import { GeoTypes } from '../../store/geo.reducer';
+import { GeoTypes } from '../../store/geo.interface';
 import { TreeNode } from './tree-datasource';
 
 @Injectable({ providedIn: 'root' })

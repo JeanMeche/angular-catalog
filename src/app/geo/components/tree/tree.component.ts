@@ -3,8 +3,9 @@ import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { BaseComponent } from 'src/app/shared/base.component';
 import { GeoActions } from '../../store/geo.action';
-import { Commune, GeoState, GeoTypes, Region } from '../../store/geo.reducer';
-import { selectFeature, selectRegions } from '../../store/geo.selector';
+import { Commune, GeoTypes } from '../../store/geo.interface';
+import { GeoState } from '../../store/geo.reducer';
+import { selectFeature } from '../../store/geo.selector';
 import { GeoTreeControl } from './tree-control';
 import { DynamicDataSource, TreeNode } from './tree-datasource';
 

@@ -1,0 +1,52 @@
+<ng-container *ngIf="vo$ | async; let vo">
+
+  <div class="flex flex-col justify-center p-4" *ngIf="vo.detail">
+    <h1 class="text-center text-lg	font-bold pb-4"> {{vo.detail?.nom}} </h1>
+    <table class="table-auto border-collapse border border-slate-300 rounded-md">
+      <thead class="bg-slate-600 text-white">
+        <tr>
+          <th>Clé </th>
+          <th>Valeur</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>Nom</td>
+        <td>{{ vo.detail.nom }}</td>
+      </tr>
+      <tr>
+        <td>Region</td>
+        <td>{{ vo.detail.region.nom }}</td>
+      </tr>
+      <tr>
+        <td>Departement</td>
+        <td>{{ vo.detail.departement.nom }}</td>
+      </tr>
+      <tr>
+        <td>Codes postaux</td>
+        <td>{{vo.detail.codesPostaux}}</td>
+      </tr>
+      <tr *ngIf="vo.detail.population">
+        <td>Population</td>
+        <td>{{ vo.detail.population }} hab.</td>
+      </tr>
+      <tr *ngIf="vo.detail.surface">
+        <td>Surface</td>
+        <td>{{ vo.detail.surface }} KM<span class="ordinal">2</span></td>
+      </tr>
+      <tr *ngIf="vo.detail.centre">
+        <td>Centre</td>
+        <td>{{ vo.detail.centre.coordinates }} </td>
+      </tr>
+      <tr *ngIf="vo.detail.contour">
+        <td>Contour</td>
+        <td>{{ vo.detail.contour }}</td>
+      </tr>
+    </table>
+    <div class="p-4 ">Données issues de l'<a href="https://api.gouv.fr/documentation/api-geo" class="underline hover:no-underline">API
+        Découpage
+        Administratif - API Geo</a></div>
+  </div>
+  <!-- <div class="flex h-full justify-center items-center" *ngIf="vo.isLoading">
+    <mat-spinner></mat-spinner>
+  </div> -->
+</ng-container>

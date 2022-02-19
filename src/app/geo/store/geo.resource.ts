@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CommunesService } from 'src/app/api';
 import { DpartementsService } from 'src/app/api/api/dpartements.service';
 import { RgionsService } from 'src/app/api/api/rgions.service';
+import { Commune, CommuneDetail, Departement, Region } from './geo.interface';
 import { GeoParser } from './geo.parser';
-import { Commune, CommuneDetail, Departement, Region } from './geo.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class GeoResource {
@@ -24,10 +24,29 @@ export class GeoResource {
   }
 
   getCommunes(codeDepartement: string): Observable<Array<Commune>> {
-    return this.communeService.communesGet({ codeDepartement: codeDepartement }).pipe(map(this.geoParser.parseCommunes));
+    return this.communeService
+      .communesGet({ codeDepartement: codeDepartement })
+      .pipe(map(this.geoParser.parseCommunes));
   }
 
   getCommune(codeCommune: string): Observable<CommuneDetail> {
-    return this.communeService.communesCodeGet({ code: codeCommune }).pipe(map((c) => this.geoParser.parseCommune(c)));
+    return this.communeService
+      .communesCodeGet({
+        code: codeCommune,
+        fields: [
+          'nom',
+          'code',
+          'codesPostaux',
+          'centre',
+          'surface',
+          'contour',
+          'codeDepartement',
+          'departement',
+          'codeRegion',
+          'region',
+          'population',
+        ],
+      })
+      .pipe(map((c) => this.geoParser.parseCommune(c)));
   }
 }

@@ -12,6 +12,8 @@ export const selectRegions = createSelector(selectFeature, (state) => state.regi
 export const selectRegion = (codeRegion: string) =>
   createSelector(selectRegions, (regions) => regions.find((r) => r.codeRegion === codeRegion));
 
+export const selectCommuneDetail = createSelector(selectFeature, (state) => state.communeDetail);
+
 // export const selectDepartements = (codeRegion: string) =>
 //   createSelector(selectRegion(codeRegion), (regions) => regions?.departements.find((r) => r.codeRegion === codeRegion));
 
