@@ -62,4 +62,14 @@ export class TreeEffects {
       map((commune) => GeoActions.loadCommuneSuccess({ commune }))
     );
   });
+
+  getCommuneDetailFromLocation$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GeoActions.loadCommuneFromLocation),
+      switchMap((action) => {
+        return this.geoResource.getCommuneFromLocation({ lat: action.lat, lon: action.lon });
+      }),
+      map((commune) => GeoActions.loadCommuneSuccess({ commune }))
+    );
+  });
 }

@@ -20,6 +20,11 @@ export namespace GeoActions {
   );
 
   export const loadCommune = createAction('[Geo] load commune', props<{ codeCommune: string }>());
+  export const loadCommuneFromLocation = createAction(
+    '[Geo] load commune from location',
+    props<{ lat: number; lon: number }>()
+  );
+
   export const loadCommuneSuccess = createAction('[Geo] load commune success', props<{ commune: CommuneDetail }>());
 
   export const loadGeo = createAction('[Geo] load geo', props<{ geo: GeoTypes }>());

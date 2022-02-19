@@ -49,4 +49,26 @@ export class GeoResource {
       })
       .pipe(map((c) => this.geoParser.parseCommune(c)));
   }
+
+  getCommuneFromLocation(coords: { lat: number; lon: number }): Observable<CommuneDetail> {
+    return this.communeService
+      .communesGet({
+        lat: coords.lat,
+        lon: coords.lon,
+        fields: [
+          'nom',
+          'code',
+          'codesPostaux',
+          'centre',
+          'surface',
+          'contour',
+          'codeDepartement',
+          'departement',
+          'codeRegion',
+          'region',
+          'population',
+        ],
+      })
+      .pipe(map((c) => this.geoParser.parseCommune(c[0])));
+  }
 }
