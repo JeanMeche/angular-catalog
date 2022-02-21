@@ -71,9 +71,9 @@ export const geoReducer = createReducer(
       }
     });
   }),
-  on(GeoActions.selectCommune, (state, { commune }) => {
+  on(GeoActions.loadCommune, (state, { codeCommune }) => {
     return produce(state, (draft) => {
-      draft.selectedGeo = commune.id;
+      draft.selectedGeo = codeCommune;
     });
   }),
   on(GeoActions.loadCommuneSuccess, (state, { commune }) => {

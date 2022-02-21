@@ -10,10 +10,6 @@
         </tr>
       </thead>
       <tr>
-        <td>Nom</td>
-        <td>{{ vo.detail.nom }}</td>
-      </tr>
-      <tr>
         <td>Region</td>
         <td>{{ vo.detail.region.nom }}</td>
       </tr>
@@ -35,7 +31,7 @@
       </tr>
       <tr *ngIf="vo.detail.centre">
         <td>Centre</td>
-        <td>{{ vo.detail.centre.coordinates }} </td>
+        <td class="tabular-nums">{{ vo.detail.centre.coordinates }} </td>
       </tr>
       <tr *ngIf="vo.detail.contour">
         <td>Contour</td>

@@ -18,7 +18,6 @@ export class GeolocComponent {
   }
 
   showPosition = (position: GeolocationPosition): void => {
-    console.log(position.coords);
     this.store.dispatch(
       GeoActions.loadCommuneFromLocation({ lat: position.coords.latitude, lon: position.coords.longitude })
     );

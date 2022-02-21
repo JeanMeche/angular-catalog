@@ -10,6 +10,7 @@ export namespace GeoActions {
     '[Geo] load departements success',
     props<{ codeRegion: string; departements: Array<Departement> }>()
   );
+
   export const loadCommunes = createAction(
     '[Geo] load communes',
     props<{ codeRegion: string; codeDepartement: string }>()
@@ -19,7 +20,6 @@ export namespace GeoActions {
     props<{ codeRegion: string; codeDepartement: string; communes: Array<Commune> }>()
   );
 
-  export const loadCommune = createAction('[Geo] load commune', props<{ codeCommune: string }>());
   export const loadCommuneFromLocation = createAction(
     '[Geo] load commune from location',
     props<{ lat: number; lon: number }>()
@@ -33,5 +33,7 @@ export namespace GeoActions {
 
   export const selectGeo = createAction('[Geo] select', props<{ geo: GeoTypes }>());
 
-  export const selectCommune = createAction('[Geo] select commune', props<{ commune: Commune }>());
+  export const navigateToCommune = createAction('[Geo] Navigate Commune', props<{ codeCommune: string }>());
+
+  export const loadCommune = createAction('[Geo] select commune', props<{ codeCommune: string }>());
 }

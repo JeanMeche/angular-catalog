@@ -56,6 +56,6 @@ export class TreeComponent extends BaseComponent {
     if (isExpanded) {
       $event.stopPropagation();
     }
-    this.store.dispatch(GeoActions.selectCommune({ commune }));
+    this.store.dispatch(GeoActions.navigateToCommune({ codeCommune: commune.codeCommune }));
   }
 }
