@@ -51,7 +51,7 @@
             "index": "src/index.html",
             "inlineStyleLanguage": "scss",
             "main": "src/main.ts",
-            "outputPath": "docs",
+            "outputPath": "dist",
             "polyfills": "src/polyfills.ts",
             "scripts": [],
             "styles": [

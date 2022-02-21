@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href './'",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@angular/animations": "13.2.3",
+    "@angular/cdk": "13.2.3",
     "@angular/common": "13.2.3",
     "@angular/compiler": "13.2.3",
     "@angular/core": "13.2.3",
