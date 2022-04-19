@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { CommunesService } from 'src/app/api';
-import { DpartementsService } from 'src/app/api/api/dpartements.service';
-import { RgionsService } from 'src/app/api/api/rgions.service';
+import { CommunesService } from 'src/app/geo/api';
+import { DpartementsService } from 'src/app/geo/api/api/dpartements.service';
+import { RgionsService } from 'src/app/geo/api/api/rgions.service';
 import { Commune, CommuneDetail, Departement, Region } from './geo.interface';
 import { GeoParser } from './geo.parser';
 

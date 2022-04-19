@@ -1,0 +1,1516 @@
+swagger: "2.0"
+info:
+  description: Adresse de la documentation http://hubeau.eaufrance.fr/page/api-temperature-en-continu-cours-deau
+  version: 1.0.0
+  title: API Hub'Eau - Température des cours d'eau en continu
+  contact: {}
+host: hubeau.eaufrance.fr
+basePath: /api
+tags:
+  - name: temperature
+    description: Opérations sur la témperature des cours d'eau en continu
+paths:
+  /v1/temperature/chronique:
+    get:
+      tags:
+        - temperature
+      summary: Lister les chroniques de température
+      description: "Ce service permet de rechercher des chroniques de température sur des cours d'eau et plan d'eau en France et les DROM.<br/>Source de données : Naïades est l'interface nationale pour l'accès aux données des rivières et des lacs. <a href='http://naiades.eaufrance.fr/acces-donnees#/temperature' target='_blank'>http://naiades.eaufrance.fr/acces-donnees#/temperature</a><br/>Si la valeur du paramètre size n'est pas renseignée, la taille de page par défaut : 1000, taille max de la page : 5000.<br/>La profondeur d'accès aux résultats est : 20000, calcul de la profondeur = numéro de la page * nombre maximum de résultats dans une page.<br/>Trie par défaut : code_station asc, date_mesure_temp asc, heure_mesure_temp asc"
+      operationId: chroniques
+      produces:
+        - application/json
+        - application/javascript;charset=UTF-8
+      parameters:
+        - name: code_station
+          in: query
+          description: "Code de la station de mesure: Identifiant de la station de mesure dans le référentiel national Sandre, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200"
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_station
+          in: query
+          description: Libellé national de la station de mesure, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_commune
+          in: query
+          description: Code INSEE de la commune où est implantée la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: libelle_commune
+          in: query
+          description: Libellé long de la commune, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: code_departement
+          in: query
+          description: Code du département, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: libelle_departement
+          in: query
+          description: Libellé long du département, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: code_region
+          in: query
+          description: Code de la région (INSEE), si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_region
+          in: query
+          description: Libellé long de la région, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: code_troncon_hydro
+          in: query
+          description: Code du tronçon hydrographique associé à la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_cours_eau
+          in: query
+          description: Code du du cours d'eau, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_cours_eau
+          in: query
+          description: Libellé long du cours d'eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_masse_eau
+          in: query
+          description: Code national de la masse d’eau de la station de mesure, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_masse_eau
+          in: query
+          description: Nom de la masse d’eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_sous_bassin
+          in: query
+          description: Code européen du sous-bassin DCE administratif, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_sous_bassin
+          in: query
+          description: Nom du sous bassin DCE administratif, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_bassin
+          in: query
+          description: Code national du bassin DCE, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_bassin
+          in: query
+          description: Nom du bassin DCE, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: bbox
+          in: query
+          description: "Rectangle d'emprise de l'objet demandé, emprise au format : min longitude, min latitude, max longitude, max latitude avec les coordonnées en WGS84 (EPSG:4326), le point doit être utilisé comme séparateur décimal, exemple : 1.6194,47.7965,2.1910,47.9988"
+          required: false
+          type: array
+          items:
+            type: number
+            format: double
+          collectionFormat: multi
+        - name: size
+          in: query
+          description: Nombre maximum de résultats dans une page
+          required: false
+          type: integer
+          default: 20
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: fields
+          in: query
+          description: Liste des champs souhaités dans la réponse (fonctionnalité expérimentale), par exemple fields=code_station,localisation
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Numéro de la page
+          required: false
+          type: integer
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: date_debut_mesure
+          in: query
+          description: "Date de début des mesures de températures : renvoie toutes les mesures à partir de cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: date_fin_mesure
+          in: query
+          description: "Date de fin des mesures de températures : renvoie toutes les mesures antérieures à cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: resultat_min
+          in: query
+          description: "Valeur minimale (inclue) du résultat de l'analyse : renvoie toutes les mesures supérieures ou égales à cette valeur"
+          required: false
+          type: number
+          format: double
+        - name: resultat_max
+          in: query
+          description: "Valeur maximale (inclue) du résultat de l'analyse : renvoie toutes les mesures inférieures ou égales à cette valeur"
+          required: false
+          type: number
+          format: double
+        - name: longitude
+          in: query
+          description: "Longitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 1.937"
+          required: false
+          type: number
+          format: double
+        - name: latitude
+          in: query
+          description: "Latitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 47.829"
+          required: false
+          type: number
+          format: double
+        - name: distance
+          in: query
+          description: "Rayon de recherche en kilomètre, le point doit être utilisé comme séparateur décimal, exemple : 30"
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: Ordre de tri (asc ou desc) sur la date de la mesure (si la valeur n'est pas renseignée, la valeur par défaut est asc)
+          required: false
+          type: string
+          enum:
+            - asc
+            - desc
+      responses:
+        "200":
+          description: OK, tous les résultats sont présents dans la réponse
+          schema:
+            $ref: "#/definitions/Résultat d'une rêquete sur les chroniques"
+        "206":
+          description: OK, il reste des résultats
+          schema:
+            $ref: "#/definitions/Résultat d'une rêquete sur les chroniques"
+        "400":
+          description: Requête incorrecte
+          schema:
+            $ref: "#/definitions/Message d'erreur"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Erreur interne du serveur
+  /v1/temperature/chronique.csv:
+    get:
+      tags:
+        - temperature
+      summary: Lister les chroniques de température au format CSV
+      description: "Ce service permet de rechercher des chroniques de température sur des cours d'eau et plan d'eau en France et les DROM.<br/>Source de données : Naïades est l'interface nationale pour l'accès aux données des rivières et des lacs. <a href='http://naiades.eaufrance.fr/acces-donnees#/temperature' target='_blank'>http://naiades.eaufrance.fr/acces-donnees#/temperature</a><br/>Si la valeur du paramètre size n'est pas renseignée, la taille de page par défaut : 1000, taille max de la page : 5000.<br/>La profondeur d'accès aux résultats est : 20000, calcul de la profondeur = numéro de la page * nombre maximum de résultats dans une page.<br/>Trie par défaut : code_station asc, date_mesure_temp asc, heure_mesure_temp asc"
+      operationId: chroniques csv
+      produces:
+        - text/csv
+      parameters:
+        - name: code_station
+          in: query
+          description: "Code de la station de mesure: Identifiant de la station de mesure dans le référentiel national Sandre, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200"
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_station
+          in: query
+          description: Libellé national de la station de mesure, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_commune
+          in: query
+          description: Code INSEE de la commune où est implantée la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: libelle_commune
+          in: query
+          description: Libellé long de la commune, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: code_departement
+          in: query
+          description: Code du département, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: libelle_departement
+          in: query
+          description: Libellé long du département, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: code_region
+          in: query
+          description: Code de la région (INSEE), si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_region
+          in: query
+          description: Libellé long de la région, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: code_troncon_hydro
+          in: query
+          description: Code du tronçon hydrographique associé à la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_cours_eau
+          in: query
+          description: Code du du cours d'eau, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_cours_eau
+          in: query
+          description: Libellé long du cours d'eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_masse_eau
+          in: query
+          description: Code national de la masse d’eau de la station de mesure, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_masse_eau
+          in: query
+          description: Nom de la masse d’eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_sous_bassin
+          in: query
+          description: Code européen du sous-bassin DCE administratif, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_sous_bassin
+          in: query
+          description: Nom du sous bassin DCE administratif, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_bassin
+          in: query
+          description: Code national du bassin DCE, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_bassin
+          in: query
+          description: Nom du bassin DCE, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: bbox
+          in: query
+          description: "Rectangle d'emprise de l'objet demandé, emprise au format : min longitude, min latitude, max longitude, max latitude avec les coordonnées en WGS84 (EPSG:4326), le point doit être utilisé comme séparateur décimal, exemple : 1.6194,47.7965,2.1910,47.9988"
+          required: false
+          type: array
+          items:
+            type: number
+            format: double
+          collectionFormat: multi
+        - name: size
+          in: query
+          description: Nombre maximum de résultats dans une page
+          required: false
+          type: integer
+          default: 20
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: fields
+          in: query
+          description: Liste des champs souhaités dans la réponse (fonctionnalité expérimentale), par exemple fields=code_station,localisation
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Numéro de la page
+          required: false
+          type: integer
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: date_debut_mesure
+          in: query
+          description: "Date de début des mesures de températures : renvoie toutes les mesures à partir de cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: date_fin_mesure
+          in: query
+          description: "Date de fin des mesures de températures : renvoie toutes les mesures antérieures à cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: resultat_min
+          in: query
+          description: "Valeur minimale (inclue) du résultat de l'analyse : renvoie toutes les mesures supérieures ou égales à cette valeur"
+          required: false
+          type: number
+          format: double
+        - name: resultat_max
+          in: query
+          description: "Valeur maximale (inclue) du résultat de l'analyse : renvoie toutes les mesures inférieures ou égales à cette valeur"
+          required: false
+          type: number
+          format: double
+        - name: longitude
+          in: query
+          description: "Longitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 1.937"
+          required: false
+          type: number
+          format: double
+        - name: latitude
+          in: query
+          description: "Latitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 47.829"
+          required: false
+          type: number
+          format: double
+        - name: distance
+          in: query
+          description: "Rayon de recherche en kilomètre, le point doit être utilisé comme séparateur décimal, exemple : 30"
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: Ordre de tri (asc ou desc) sur la date de la mesure (si la valeur n'est pas renseignée, la valeur par défaut est asc)
+          required: false
+          type: string
+          enum:
+            - asc
+            - desc
+      responses:
+        "200":
+          description: OK, tous les résultats sont présents dans la réponse
+          schema:
+            $ref: "#/definitions/Chronique"
+        "206":
+          description: OK, il reste des résultats
+          schema:
+            $ref: "#/definitions/Chronique"
+        "400":
+          description: Requête incorrecte
+          schema:
+            $ref: "#/definitions/Message d'erreur"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Erreur interne du serveur
+  /v1/temperature/station:
+    get:
+      tags:
+        - temperature
+      summary: Lister les stations de mesures de température
+      description: "Ce service permet de rechercher des stations de mesures  sur des cours d'eau et plan d'eau en France et les DROM.<br/>Source de données : Naïades est l'interface nationale pour l'accès aux données des rivières et des lacs. <a href='http://naiades.eaufrance.fr/acces-donnees#/temperature' target='_blank'>http://naiades.eaufrance.fr/acces-donnees#/temperature</a><br/>Si la valeur du paramètre size n'est pas renseignée, la taille de page par défaut : 1000, taille max de la page : 5000.<br/>La profondeur d'accès aux résultats est : 20000, calcul de la profondeur = numéro de la page * nombre maximum de résultats dans une page.<br/>Trie par défaut : code_station asc"
+      operationId: stations
+      produces:
+        - application/json
+        - application/vnd.geo+json
+        - application/javascript;charset=UTF-8
+      parameters:
+        - name: code_station
+          in: query
+          description: "Code de la station de mesure: Identifiant de la station de mesure dans le référentiel national Sandre, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200"
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_station
+          in: query
+          description: Libellé national de la station de mesure, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_commune
+          in: query
+          description: Code INSEE de la commune où est implantée la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: libelle_commune
+          in: query
+          description: Libellé long de la commune, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: code_departement
+          in: query
+          description: Code du département, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: libelle_departement
+          in: query
+          description: Libellé long du département, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: code_region
+          in: query
+          description: Code de la région (INSEE), si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_region
+          in: query
+          description: Libellé long de la région, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: code_troncon_hydro
+          in: query
+          description: Code du tronçon hydrographique associé à la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_cours_eau
+          in: query
+          description: Code du du cours d'eau, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_cours_eau
+          in: query
+          description: Libellé long du cours d'eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_masse_eau
+          in: query
+          description: Code national de la masse d’eau de la station de mesure, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_masse_eau
+          in: query
+          description: Nom de la masse d’eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_sous_bassin
+          in: query
+          description: Code européen du sous-bassin DCE administratif, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_sous_bassin
+          in: query
+          description: Nom du sous bassin DCE administratif, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_bassin
+          in: query
+          description: Code national du bassin DCE, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_bassin
+          in: query
+          description: Nom du bassin DCE, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: bbox
+          in: query
+          description: "Rectangle d'emprise de l'objet demandé, emprise au format : min longitude, min latitude, max longitude, max latitude avec les coordonnées en WGS84 (EPSG:4326), le point doit être utilisé comme séparateur décimal, exemple : 1.6194,47.7965,2.1910,47.9988"
+          required: false
+          type: array
+          items:
+            type: number
+            format: double
+          collectionFormat: multi
+        - name: size
+          in: query
+          description: Nombre maximum de résultats dans une page
+          required: false
+          type: integer
+          default: 20
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: fields
+          in: query
+          description: Liste des champs souhaités dans la réponse (fonctionnalité expérimentale), par exemple fields=code_station,localisation
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Numéro de la page
+          required: false
+          type: integer
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: date_debut_mesure
+          in: query
+          description: "Date de début des mesures de températures : renvoie toutes les stations ayant des mesures à partir de cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: date_fin_mesure
+          in: query
+          description: "Date de fin des mesures de températures : renvoie toutes les stations ayant des mesures antérieures à cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: longitude
+          in: query
+          description: "Longitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 1.937"
+          required: false
+          type: number
+          format: double
+        - name: latitude
+          in: query
+          description: "Latitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 47.829"
+          required: false
+          type: number
+          format: double
+        - name: distance
+          in: query
+          description: "Rayon de recherche en kilomètre, le point doit être utilisé comme séparateur décimal, exemple : 30"
+          required: false
+          type: integer
+          format: int32
+        - name: exact_count
+          in: query
+          description: "Si égal true permet d'avoir une pagination (count, last) exacte mais la réponse est moins rapide, sinon (false) c'est une approximation mais la réponse est plus rapide (défaut : true)"
+          required: false
+          type: boolean
+          default: true
+        - name: format
+          in: query
+          description: "Format de réponse attendu. Supportés : json, geojson (défaut : json)"
+          required: false
+          type: string
+          default: json
+          enum:
+            - json
+            - geojson
+      responses:
+        "200":
+          description: OK, tous les résultats sont présents dans la réponse
+          schema:
+            $ref: "#/definitions/Résultat d'une rêquete sur les stations"
+        "206":
+          description: OK, il reste des résultats
+          schema:
+            $ref: "#/definitions/Résultat d'une rêquete sur les stations"
+        "400":
+          description: Requête incorrecte
+          schema:
+            $ref: "#/definitions/Message d'erreur"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Erreur interne du serveur
+  /v1/temperature/station.csv:
+    get:
+      tags:
+        - temperature
+      summary: Lister les stations de mesures de température au format CSV
+      description: "Ce service permet de rechercher des stations de mesures  sur des cours d'eau et plan d'eau en France et les DROM.<br/>Source de données : Naïades est l'interface nationale pour l'accès aux données des rivières et des lacs. <a href='http://naiades.eaufrance.fr/acces-donnees#/temperature' target='_blank'>http://naiades.eaufrance.fr/acces-donnees#/temperature</a><br/>Si la valeur du paramètre size n'est pas renseignée, la taille de page par défaut : 1000, taille max de la page : 5000.<br/>La profondeur d'accès aux résultats est : 20000, calcul de la profondeur = numéro de la page * nombre maximum de résultats dans une page.<br/>Trie par défaut : code_station asc"
+      operationId: station csv
+      produces:
+        - text/csv
+      parameters:
+        - name: code_station
+          in: query
+          description: "Code de la station de mesure: Identifiant de la station de mesure dans le référentiel national Sandre, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200"
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_station
+          in: query
+          description: Libellé national de la station de mesure, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_commune
+          in: query
+          description: Code INSEE de la commune où est implantée la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: libelle_commune
+          in: query
+          description: Libellé long de la commune, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  50
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 50
+          minimum: 0
+        - name: code_departement
+          in: query
+          description: Code du département, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: libelle_departement
+          in: query
+          description: Libellé long du département, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  20
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 20
+          minimum: 0
+        - name: code_region
+          in: query
+          description: Code de la région (INSEE), si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_region
+          in: query
+          description: Libellé long de la région, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: code_troncon_hydro
+          in: query
+          description: Code du tronçon hydrographique associé à la station, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_cours_eau
+          in: query
+          description: Code du du cours d'eau, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_cours_eau
+          in: query
+          description: Libellé long du cours d'eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_masse_eau
+          in: query
+          description: Code national de la masse d’eau de la station de mesure, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_masse_eau
+          in: query
+          description: Nom de la masse d’eau, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_sous_bassin
+          in: query
+          description: Code européen du sous-bassin DCE administratif, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: libelle_sous_bassin
+          in: query
+          description: Nom du sous bassin DCE administratif, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  200
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 200
+          minimum: 0
+        - name: code_bassin
+          in: query
+          description: Code national du bassin DCE, si plusieurs codes, séparer les codes par une virgule, le nombre maximum de code est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: libelle_bassin
+          in: query
+          description: Nom du bassin DCE, si plusieurs libellés, séparer les libellés par une virgule, le nombre maximum de libellé est  10
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          maximum: 10
+          minimum: 0
+        - name: bbox
+          in: query
+          description: "Rectangle d'emprise de l'objet demandé, emprise au format : min longitude, min latitude, max longitude, max latitude avec les coordonnées en WGS84 (EPSG:4326), le point doit être utilisé comme séparateur décimal, exemple : 1.6194,47.7965,2.1910,47.9988"
+          required: false
+          type: array
+          items:
+            type: number
+            format: double
+          collectionFormat: multi
+        - name: size
+          in: query
+          description: Nombre maximum de résultats dans une page
+          required: false
+          type: integer
+          default: 20
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: fields
+          in: query
+          description: Liste des champs souhaités dans la réponse (fonctionnalité expérimentale), par exemple fields=code_station,localisation
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Numéro de la page
+          required: false
+          type: integer
+          minimum: 1
+          exclusiveMinimum: false
+          format: int32
+        - name: date_debut_mesure
+          in: query
+          description: "Date de début des mesures de températures : renvoie toutes les stations ayant des mesures à partir de cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: date_fin_mesure
+          in: query
+          description: "Date de fin des mesures de températures : renvoie toutes les stations ayant des mesures antérieures à cette date"
+          required: false
+          type: string
+          format: date-time
+        - name: longitude
+          in: query
+          description: "Longitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 1.937"
+          required: false
+          type: number
+          format: double
+        - name: latitude
+          in: query
+          description: "Latitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 47.829"
+          required: false
+          type: number
+          format: double
+        - name: distance
+          in: query
+          description: "Rayon de recherche en kilomètre, le point doit être utilisé comme séparateur décimal, exemple : 30"
+          required: false
+          type: integer
+          format: int32
+        - name: exact_count
+          in: query
+          description: "Si égal true permet d'avoir une pagination (count, last) exacte mais la réponse est moins rapide, sinon (false) c'est une approximation mais la réponse est plus rapide (défaut : true)"
+          required: false
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: OK, tous les résultats sont présents dans la réponse
+          schema:
+            $ref: "#/definitions/Station"
+        "206":
+          description: OK, il reste des résultats
+          schema:
+            $ref: "#/definitions/Station"
+        "400":
+          description: Requête incorrecte
+          schema:
+            $ref: "#/definitions/Message d'erreur"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Erreur interne du serveur
+definitions:
+  Chronique:
+    type: object
+    properties:
+      code_station:
+        type: string
+        description: "Code de la station de mesure: Identifiant de la station de mesure dans le référentiel national Sandre"
+        allowEmptyValue: false
+      libelle_station:
+        type: string
+        description: Libellé national de la station de mesure
+        allowEmptyValue: false
+      uri_station:
+        type: string
+        description: URI de la station de mesure
+        allowEmptyValue: false
+      longitude:
+        type: number
+        format: double
+        description: "Longitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 1.937"
+        allowEmptyValue: false
+      latitude:
+        type: number
+        format: double
+        description: "Latitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 47.829"
+        allowEmptyValue: false
+      code_commune:
+        type: string
+        description: Code INSEE de la commune où est implantée la station
+        allowEmptyValue: false
+      libelle_commune:
+        type: string
+        description: Libellé long de la commune
+        allowEmptyValue: false
+      code_cours_eau:
+        type: string
+        description: Code du du cours d'eau
+        allowEmptyValue: false
+      libelle_cours_eau:
+        type: string
+        description: Libellé long du cours d'eau
+        allowEmptyValue: false
+      uri_cours_eau:
+        type: string
+        description: URI du cours d'eau
+        allowEmptyValue: false
+      code_parametre:
+        type: string
+        description: Code SANDRE du paramètre mesuré (ici toujours égal à 1301)
+        allowEmptyValue: false
+      libelle_parametre:
+        type: string
+        description: Libellé long du paramètre mesuré (ici Température de l'Eau)
+        allowEmptyValue: false
+      date_mesure_temp:
+        type: string
+        format: date-time
+        example: "2016-12-01"
+        description: Date de la mesure
+        allowEmptyValue: false
+      heure_mesure_temp:
+        type: string
+        example: "16:12:36"
+        description: Heure de la mesure
+        allowEmptyValue: false
+      resultat:
+        type: number
+        format: double
+        description: Résultat
+        allowEmptyValue: false
+      code_unite:
+        type: string
+        description: Code de l'unité de mesure (ici toujours égal à 27)
+        allowEmptyValue: false
+      symbole_unite:
+        type: string
+        description: Symbole de l'unité de mesure (ici toujours égal à degré C)
+        allowEmptyValue: false
+      code_qualification:
+        type: string
+        description: Code de la qualification de l’acquisition du résultat de l’analyse de température
+        allowEmptyValue: false
+      libelle_qualification:
+        type: string
+        description: Libellé de la qualification de l’acquisition du résultat de l’analyse de température
+        allowEmptyValue: false
+    title: Chronique
+    description: Chronique
+  Crs:
+    type: object
+    properties:
+      properties:
+        type: object
+      type:
+        type: string
+        enum:
+          - name
+          - link
+    title: Crs
+  Erreur:
+    type: object
+    properties:
+      code:
+        type: string
+        description: Code de l'erreur
+        allowEmptyValue: false
+      message:
+        type: string
+        description: Message en rapport avec l'erreur sur le paramètre
+        allowEmptyValue: false
+      field:
+        type: string
+        description: Le nom du paramètre avec l'erreur
+        allowEmptyValue: false
+    title: Erreur
+    description: Erreur
+  LngLatAlt:
+    type: object
+    properties:
+      additionalElements:
+        type: array
+        items:
+          type: number
+          format: double
+      altitude:
+        type: number
+        format: double
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+    title: LngLatAlt
+  Message d'erreur:
+    type: object
+    properties:
+      code:
+        type: string
+        description: Code de l'erreur
+        allowEmptyValue: false
+      message:
+        type: string
+        description: Message en rapport avec l'erreur
+        allowEmptyValue: false
+      field_errors:
+        type: array
+        description: Liste des paramètres avec des erreurs
+        allowEmptyValue: false
+        items:
+          $ref: "#/definitions/Erreur"
+    title: Message d'erreur
+    description: Message d'erreur
+  Point:
+    type: object
+    properties:
+      bbox:
+        type: array
+        items:
+          type: number
+          format: double
+      coordinates:
+        $ref: "#/definitions/LngLatAlt"
+      crs:
+        $ref: "#/definitions/Crs"
+    title: Point
+  Résultat d'une rêquete sur les chroniques:
+    type: object
+    required:
+      - api_version
+      - count
+      - data
+      - first
+      - last
+      - next
+      - prev
+    properties:
+      count:
+        type: integer
+        format: int32
+        description: Le nombre total de résultat
+        allowEmptyValue: false
+      first:
+        type: string
+        description: URL de la 1er page des résultats
+        allowEmptyValue: false
+      last:
+        type: string
+        description: URL de la dernière page des résultats (non disponible quand la pagination utilise un curseur)
+        allowEmptyValue: false
+      prev:
+        type: string
+        description: URL de la page précédente
+        allowEmptyValue: false
+      next:
+        type: string
+        description: URL de la page suivante
+        allowEmptyValue: false
+      api_version:
+        type: string
+        description: Version de l'API (<a href='https://semver.org/' target='_blank'>https://semver.org/</a>)
+        allowEmptyValue: false
+      data:
+        type: array
+        description: Les résultats de la requête sous forme de liste
+        allowEmptyValue: false
+        items:
+          $ref: "#/definitions/Chronique"
+    title: Résultat d'une rêquete sur les chroniques
+    description: Résultat d'une rêquete sur les chroniques
+  Résultat d'une rêquete sur les stations:
+    type: object
+    required:
+      - api_version
+      - count
+      - data
+      - first
+      - last
+      - next
+      - prev
+    properties:
+      count:
+        type: integer
+        format: int32
+        description: Le nombre total de résultat
+        allowEmptyValue: false
+      first:
+        type: string
+        description: URL de la 1er page des résultats
+        allowEmptyValue: false
+      last:
+        type: string
+        description: URL de la dernière page des résultats (non disponible quand la pagination utilise un curseur)
+        allowEmptyValue: false
+      prev:
+        type: string
+        description: URL de la page précédente
+        allowEmptyValue: false
+      next:
+        type: string
+        description: URL de la page suivante
+        allowEmptyValue: false
+      api_version:
+        type: string
+        description: Version de l'API (<a href='https://semver.org/' target='_blank'>https://semver.org/</a>)
+        allowEmptyValue: false
+      data:
+        type: array
+        description: Les résultats de la requête sous forme de liste
+        allowEmptyValue: false
+        items:
+          $ref: "#/definitions/Station"
+    title: Résultat d'une rêquete sur les stations
+    description: Résultat d'une rêquete sur les stations
+  Station:
+    type: object
+    properties:
+      code_station:
+        type: string
+        description: "Code de la station de mesure: Identifiant de la station de mesure dans le référentiel national Sandre"
+        allowEmptyValue: false
+      libelle_station:
+        type: string
+        description: Libellé national de la station de mesure
+        allowEmptyValue: false
+      uri_station:
+        type: string
+        description: URI de la station de mesure
+        allowEmptyValue: false
+      localisation:
+        type: string
+        description: Localisation précise de la station de mesure
+        allowEmptyValue: false
+      coordonnee_x:
+        type: number
+        format: double
+        description: Coordonnée X du point caractéristique de la station de mesure
+        allowEmptyValue: false
+      coordonnee_y:
+        type: number
+        format: double
+        description: Coordonnée Y du point caractéristique de la station de mesure
+        allowEmptyValue: false
+      code_type_projection:
+        type: integer
+        format: int32
+        description: Code du type de projection des coordonnées de la station de mesure
+        allowEmptyValue: false
+      longitude:
+        type: number
+        format: double
+        description: "Longitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 1.937"
+        allowEmptyValue: false
+      latitude:
+        type: number
+        format: double
+        description: "Latitude du point en WGS84 pour la recherche par rayon, le point doit être utilisé comme séparateur décimal, exemple : 47.829"
+        allowEmptyValue: false
+      code_commune:
+        type: string
+        description: Code INSEE de la commune où est implantée la station
+        allowEmptyValue: false
+      libelle_commune:
+        type: string
+        description: Libellé long de la commune
+        allowEmptyValue: false
+      code_departement:
+        type: string
+        description: Code du département
+        allowEmptyValue: false
+      libelle_departement:
+        type: string
+        description: Libellé long du département
+        allowEmptyValue: false
+      code_region:
+        type: string
+        description: Code de la région (INSEE)
+        allowEmptyValue: false
+      libelle_region:
+        type: string
+        description: Libellé long de la région
+        allowEmptyValue: false
+      code_troncon_hydro:
+        type: string
+        description: Code du tronçon hydrographique associé à la station
+        allowEmptyValue: false
+      code_cours_eau:
+        type: string
+        description: Code du du cours d'eau
+        allowEmptyValue: false
+      libelle_cours_eau:
+        type: string
+        description: Libellé long du cours d'eau
+        allowEmptyValue: false
+      uri_cours_eau:
+        type: string
+        description: URI du cours d'eau
+        allowEmptyValue: false
+      code_masse_eau:
+        type: string
+        description: Code national de la masse d’eau de la station de mesure
+        allowEmptyValue: false
+      libelle_masse_eau:
+        type: string
+        description: Nom de la masse d’eau
+        allowEmptyValue: false
+      uri_masse_eau:
+        type: string
+        description: URI de la masse d'eau
+        allowEmptyValue: false
+      code_sous_bassin:
+        type: string
+        description: Code européen du sous-bassin DCE administratif
+        allowEmptyValue: false
+      libelle_sous_bassin:
+        type: string
+        description: Nom du sous bassin DCE administratif
+        allowEmptyValue: false
+      code_bassin:
+        type: string
+        description: Code national du bassin DCE
+        allowEmptyValue: false
+      libelle_bassin:
+        type: string
+        description: Nom du bassin DCE
+        allowEmptyValue: false
+      uri_bassin:
+        type: string
+        description: URI du bassin DCE (régions hydrographiques)
+        allowEmptyValue: false
+      pk:
+        type: number
+        format: double
+        description: Point kilométrique du point caractéristique sur le tronçon de l'entité hydrographique principale
+        allowEmptyValue: false
+      altitude:
+        type: number
+        format: double
+        description: Altitude du point caractéristique de la station de mesure
+        allowEmptyValue: false
+      date_maj_infos:
+        type: string
+        format: date-time
+        example: "2016-12-01"
+        description: Date de mise à jour des informations sur la station de mesure
+        allowEmptyValue: false
+      geometry:
+        description: Géométrie de la station dans le système de coordonnées WGS84
+        allowEmptyValue: false
+        $ref: "#/definitions/Point"
+    title: Station
+    description: Station

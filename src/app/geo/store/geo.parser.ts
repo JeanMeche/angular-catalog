@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CommuneBE, DepartementBE, RegionBE } from 'src/app/api';
+import { CommuneBE, DepartementBE, RegionBE } from 'src/app/geo/api';
 import { Commune, CommuneDetail, Departement, Region } from './geo.interface';
 
 @Injectable({ providedIn: 'root' })

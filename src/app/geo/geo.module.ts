@@ -11,7 +11,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ApiModule } from '../api';
+import { ApiModule } from './api';
 import { CardComponent } from './components/card/card.component';
 import { CommuneDetailComponent } from './components/commune-detail/commune-detail.component';
 import { GeoComponent } from './components/geo/geo.component';

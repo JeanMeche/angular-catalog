@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "analytics": "cd3b33e5-9a31-4f85-a1a2-ca5bc60ca214",
-    "defaultCollection": "@angular-eslint/schematics"
+    "defaultCollection": "@ngrx/schematics"
   },
   "defaultProject": "poc-catalog",
   "newProjectRoot": "projects",
