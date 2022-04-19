@@ -1,3 +1,5 @@
+$se-life-green: #3dcd58;
+
 @import "./styles/material.scss";
 @import "./styles/components.scss";
 
@@ -14,5 +16,5 @@
   --warn-color: #ffa500;
   --error-color: #ff0000;
 
-  --se-life-green: #3dcd58;
+  --se-life-green: #{$se-life-green};
 }
