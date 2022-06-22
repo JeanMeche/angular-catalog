@@ -2,7 +2,7 @@
   "root": true,
   "plugins": [],
   "ignorePatterns": [
-    "projects/**/*"
+    "src/app/api/**/*"
   ],
   "overrides": [
     {
@@ -46,7 +46,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "no-constant-binary-expression": "error"
       }
     },
     {
