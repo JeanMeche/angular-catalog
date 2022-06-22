@@ -1,4 +1,4 @@
-$se-life-green: #3dcd58;
+$bondy: #0095b6;
 
 @import "./styles/material.scss";
 @import "./styles/components.scss";
@@ -16,5 +16,5 @@ $se-life-green: #3dcd58;
   --warn-color: #ffa500;
   --error-color: #ff0000;
 
-  --se-life-green: #{$se-life-green};
+  --bondy: #{$bondy};
 }

@@ -3,9 +3,9 @@
 @import "~@angular/material/theming";
 @import "mat-palette-gen.scss";
 
-$se-life-green-palette: createPalette($se-life-green);
+$bondy-palette: createPalette($bondy);
 
-$my-primary: mat-palette($se-life-green-palette);
+$my-primary: mat-palette($bondy-palette);
 $my-accent: mat-palette($mat-orange, 300, 500, 900);
 $my-warn: mat-palette($mat-red, 200);
 

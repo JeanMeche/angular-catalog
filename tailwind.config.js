@@ -8,7 +8,7 @@ module.exports = {
         primary: "var(--primary-color)",
         secondary: "var(--secondary-color)",
         third: "var(--third-color)",
-        seLifeGreen: "var(--se-life-green)",
+        bondy: "var(--bondy)",
       },
     },
   },
