@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -29,7 +28,6 @@ import { featureKey, geoReducer } from './store/geo.reducer';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    CommonModule,
     StoreModule.forFeature(featureKey, geoReducer),
     EffectsModule.forFeature([TreeEffects]),
 
