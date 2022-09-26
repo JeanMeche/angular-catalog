@@ -1,4 +1,4 @@
-<ng-container *ngIf="vo$ | async; let vo">
+<ng-container *ngIf="vo$ | ngrxPush as vo">
 
   <div class="flex flex-col justify-center p-4" *ngIf="vo.detail">
     <h1 class="text-center text-lg	font-bold pb-4"> {{vo.detail.nom}} </h1>

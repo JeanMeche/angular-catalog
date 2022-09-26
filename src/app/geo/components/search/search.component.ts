@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
-import { combineLatest, debounceTime, map, Observable, startWith, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { BaseComponent } from 'src/app/shared/base.component';
 import { GeoActions } from '../../store/geo.action';
 import { Commune } from '../../store/geo.interface';
@@ -14,14 +14,14 @@ import { GeoResource } from '../../store/geo.resource';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent extends BaseComponent {
+export class SearchComponent extends BaseComponent implements OnInit {
   searchControl = new FormControl();
 
   vo$: Observable<{
     suggestions: Array<Commune> | undefined;
   }>;
 
-  constructor(private geoResource: GeoResource, private store: Store<GeoState>) {
+  constructor(private geoResource: GeoResource, private store: Store<GeoState>, private cd: ChangeDetectorRef) {
     super();
     const searchResult$ = this.searchControl.valueChanges.pipe(
       debounceTime(500),
@@ -33,11 +33,22 @@ export class SearchComponent extends BaseComponent {
 
     this.vo$ = combineLatest([searchResult$]).pipe(
       map(([searchResult]) => {
+        console.log('lala');
         return {
           suggestions: searchResult?.result,
         };
-      })
+      }),
+      startWith({ suggestions: [] }),
+      tap(console.log)
     );
+
+    setTimeout(() => {
+      this.cd.detectChanges();
+    });
+  }
+
+  ngOnInit(): void {
+    console.log('lala');
   }
 
   displayWith = (commune?: Commune): string => {

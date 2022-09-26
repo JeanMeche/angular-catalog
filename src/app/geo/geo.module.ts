@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -8,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
+import { LetModule, PushModule } from '@ngrx/component';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ApiModule } from '../api';
@@ -24,12 +26,15 @@ import { featureKey, geoReducer } from './store/geo.reducer';
   declarations: [GeoComponent, TreeComponent, CardComponent, CommuneDetailComponent, GeolocComponent, SearchComponent],
   exports: [],
   imports: [
+    CommonModule,
     ApiModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
     StoreModule.forFeature(featureKey, geoReducer),
     EffectsModule.forFeature([TreeEffects]),
+    PushModule,
+    LetModule,
 
     MatTreeModule,
     MatIconModule,
