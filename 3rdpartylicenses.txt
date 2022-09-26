@@ -66,6 +66,9 @@ MIT
 @angular/router
 MIT
 
+@ngrx/component
+MIT
+
 @ngrx/effects
 MIT
 
