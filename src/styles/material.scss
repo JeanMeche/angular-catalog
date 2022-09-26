@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "~@angular/material/theming";
+@import "@angular/material/theming";
 @import "mat-palette-gen.scss";
 
 $bondy-palette: createPalette($bondy);
