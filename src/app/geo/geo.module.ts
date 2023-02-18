@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -26,6 +27,7 @@ import { featureKey, geoReducer } from './store/geo.reducer';
   imports: [
     ApiModule,
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     StoreModule.forFeature(featureKey, geoReducer),

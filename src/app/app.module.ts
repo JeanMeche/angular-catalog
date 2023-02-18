@@ -1,7 +1,5 @@
-import { AsyncPipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -16,7 +14,6 @@ import { RouterEffects } from './router/router.effects';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -35,7 +32,6 @@ import { RouterEffects } from './router/router.effects';
           autoPause: true, // Pauses recording actions and state changes when the extension window is not open
         }),
 
-    AsyncPipe,
     GeoModule,
   ],
   providers: [],
